@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Pastel Pro" />
+  <title>Pastel Pro</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HOME SCREEN -->
+  <div id="screen-home" class="screen active">
+    <div class="home-content">
+      <div class="home-logo">
+        <div class="logo-mark"></div>
+        <h1 class="app-title">Pastel Pro</h1>
+        <p class="app-subtitle">photo editing, softly.</p>
+      </div>
+      <button id="btn-pick" class="btn-primary">
+        Edit an Image
+      </button>
+    </div>
+  </div>
+
+  <!-- EDITOR SCREEN -->
+  <div id="screen-editor" class="screen">
+
+    <header class="editor-header">
+      <button id="btn-back" class="btn-icon">✕</button>
+      <span class="editor-title">Pastel Pro</span>
+      <button id="btn-download" class="btn-save">Save</button>
+    </header>
+
+    <div class="canvas-container">
+      <canvas id="main-canvas"></canvas>
+    </div>
+
+    <div class="controls">
+      <div class="intensity-wrap">
+        <span class="intensity-label">Intensity</span>
+        <input type="range" id="intensity-slider" min="0" max="100" value="100" />
+        <span class="intensity-value" id="intensity-display">100</span>
+      </div>
+
+      <div class="presets-scroll">
+        <div class="presets-track" id="presets-track"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Hidden file input -->
+  <input type="file" id="file-input" accept="image/*" style="display:none" />
+
+  <!-- Hidden download anchor -->
+  <a id="download-anchor" style="display:none"></a>
+
+  <script src="app.js"></script>
+</body>
+</html>
