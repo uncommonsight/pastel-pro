@@ -1,5 +1,5 @@
 /* ============================================
-   PASTEL PRO — styles
+   PASTEL You — styles
    ============================================ */
 
 :root {
@@ -316,6 +316,8 @@ input[type="range"]:active::-webkit-slider-thumb {
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  display: flex;
+  justify-content: center;
 }
 
 .presets-scroll::-webkit-scrollbar {
