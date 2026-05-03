@@ -125,12 +125,107 @@ const PRESET_FOLDERS = [
   {
     id: 'gradients',
     name: 'Gradients',
-    presets: []
+    presets: [
+      {
+        id: 'original',
+        name: 'Original',
+        brightness: 1.0,
+        saturation: 1.0,
+        tint: { r: 0, g: 0, b: 0 },
+        fade: 0,
+      },
+      {
+        id: 'golden-hour',
+        name: 'Golden Hour',
+        brightness: 1.05,
+        saturation: 1.10,
+        tint: { r: 10, g: 6, b: 0 },
+        fade: 5,
+        gradient: {
+          type: 'linear-top',
+          stops: [
+            { pos: 0.0, r: 255, g: 180, b: 80, a: 0.30 },
+            { pos: 0.5, r: 255, g: 160, b: 60, a: 0.08 },
+            { pos: 1.0, r: 0, g: 0, b: 0, a: 0.0 },
+          ]
+        }
+      },
+      {
+        id: 'blue-hour',
+        name: 'Blue Hour',
+        brightness: 1.02,
+        saturation: 0.95,
+        tint: { r: 4, g: 8, b: 20 },
+        fade: 8,
+        gradient: {
+          type: 'linear-top',
+          stops: [
+            { pos: 0.0, r: 40, g: 60, b: 160, a: 0.30 },
+            { pos: 0.5, r: 20, g: 40, b: 120, a: 0.08 },
+            { pos: 1.0, r: 0, g: 0, b: 0, a: 0.0 },
+          ]
+        }
+      },
+      {
+        id: 'rose-sky',
+        name: 'Rose Sky',
+        brightness: 1.04,
+        saturation: 1.05,
+        tint: { r: 20, g: 8, b: 12 },
+        fade: 8,
+        gradient: {
+          type: 'linear-top',
+          stops: [
+            { pos: 0.0, r: 220, g: 100, b: 140, a: 0.30 },
+            { pos: 0.5, r: 200, g: 80, b: 120, a: 0.08 },
+            { pos: 1.0, r: 0, g: 0, b: 0, a: 0.0 },
+          ]
+        }
+      },
+    ]
   },
   {
     id: 'monochrome',
     name: 'Monochrome',
-    presets: []
+    presets: [
+      {
+        id: 'original',
+        name: 'Original',
+        brightness: 1.0,
+        saturation: 1.0,
+        tint: { r: 0, g: 0, b: 0 },
+        fade: 0,
+        contrast: 1.0,
+      },
+      {
+        id: 'classic-bw',
+        name: 'Classic',
+        brightness: 1.25,
+        saturation: 0.0,
+        tint: { r: 0, g: 0, b: 0 },
+        fade: 0,
+        contrast: 1.0,
+      },
+      {
+        id: 'soft-bw',
+        name: 'Soft',
+        brightness: 1.25,
+        saturation: 0.0,
+        tint: { r: 4, g: 4, b: 4 },
+        fade: 12,
+        contrast: 0.90,
+      },
+      {
+        id: 'dramatic-bw',
+        name: 'Dramatic',
+        brightness: 1.10,
+        saturation: 0.0,
+        tint: { r: 0, g: 0, b: 0 },
+        fade: 0,
+        contrast: 1.25,
+      },
+
+    ]
   }
 ];
 
@@ -151,17 +246,17 @@ const state = {
 //  DOM REFS
 // --------------------------------------------
 
-const screenHome   = document.getElementById('screen-home');
+const screenHome = document.getElementById('screen-home');
 const screenEditor = document.getElementById('screen-editor');
-const btnPick      = document.getElementById('btn-pick');
-const btnBack      = document.getElementById('btn-back');
-const btnDownload  = document.getElementById('btn-download');
-const fileInput    = document.getElementById('file-input');
+const btnPick = document.getElementById('btn-pick');
+const btnBack = document.getElementById('btn-back');
+const btnDownload = document.getElementById('btn-download');
+const fileInput = document.getElementById('file-input');
 const downloadAnchor = document.getElementById('download-anchor');
-const canvas       = document.getElementById('main-canvas');
-const ctx          = canvas.getContext('2d');
+const canvas = document.getElementById('main-canvas');
+const ctx = canvas.getContext('2d');
 const presetsTrack = document.getElementById('presets-track');
-const intensitySlider  = document.getElementById('intensity-slider');
+const intensitySlider = document.getElementById('intensity-slider');
 const intensityDisplay = document.getElementById('intensity-display');
 
 // --------------------------------------------
@@ -180,12 +275,12 @@ function showScreen(screenEl) {
 // --------------------------------------------
 
 function applyPreset(imageData, preset, intensity) {
-  const src  = imageData.data;
-  const out  = new ImageData(new Uint8ClampedArray(src), imageData.width, imageData.height);
+  const src = imageData.data;
+  const out = new ImageData(new Uint8ClampedArray(src), imageData.width, imageData.height);
   const data = out.data;
-  const t    = intensity / 100;  // 0.0 – 1.0 blend factor
+  const t = intensity / 100;  // 0.0 – 1.0 blend factor
 
-  const { brightness, saturation, tint, fade } = preset;
+  const { brightness, saturation, tint, fade, contrast = 1.0 } = preset;
 
   for (let i = 0; i < data.length; i += 4) {
     let r = src[i];
@@ -217,8 +312,14 @@ function applyPreset(imageData, preset, intensity) {
     g = g + (255 - g) * (fadeAmt / 255);
     b = b + (255 - b) * (fadeAmt / 255);
 
+    // --- Contrast ---
+    const cAdj = 1 + (contrast - 1) * t;
+    r = (r - 128) * cAdj + 128;
+    g = (g - 128) * cAdj + 128;
+    b = (b - 128) * cAdj + 128;
+
     // Clamp to 0–255
-    data[i]     = Math.min(255, Math.max(0, r));
+    data[i] = Math.min(255, Math.max(0, r));
     data[i + 1] = Math.min(255, Math.max(0, g));
     data[i + 2] = Math.min(255, Math.max(0, b));
     // alpha unchanged
@@ -245,6 +346,16 @@ function render() {
 
   const output = applyPreset(state.originalImageData, preset, state.intensity);
   ctx.putImageData(output, 0, 0);
+
+  // Draw gradient overlay if preset has one
+  if (preset && preset.gradient) {
+    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    preset.gradient.stops.forEach(stop => {
+      grad.addColorStop(stop.pos, `rgba(${stop.r}, ${stop.g}, ${stop.b}, ${stop.a * (state.intensity / 100)})`);
+    });
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 }
 
 // --------------------------------------------
@@ -268,14 +379,14 @@ function loadImage(file) {
         h = Math.round(h * ratio);
       }
 
-      canvas.width  = w;
+      canvas.width = w;
       canvas.height = h;
 
       ctx.drawImage(img, 0, 0, w, h);
       state.originalImageData = ctx.getImageData(0, 0, w, h);
-      state.activePresetId    = 'original';
-      state.intensity         = 100;
-      state.currentFolderId   = null;  // Start at folder view
+      state.activePresetId = 'original';
+      state.intensity = 100;
+      state.currentFolderId = null;  // Start at folder view
 
       intensitySlider.value = 100;
       intensityDisplay.textContent = '100';
@@ -318,23 +429,23 @@ function renderFoldersView() {
     item.dataset.id = folder.id;
     item.dataset.folderType = folder.id;
     item.dataset.folderIndex = index;
-    
+
     const visual = document.createElement('div');
     visual.className = 'folder-visual';
-    
+
     const label = document.createElement('span');
     label.className = 'folder-name';
     label.textContent = folder.name;
-    
+
     const count = document.createElement('span');
     count.className = 'folder-count';
     count.textContent = folder.presets.length;
-    
+
     item.appendChild(visual);
     item.appendChild(label);
     item.appendChild(count);
     item.addEventListener('click', () => enterFolder(folder.id, index));
-    
+
     presetsTrack.appendChild(item);
   });
 }
@@ -352,15 +463,15 @@ function renderPresetsView() {
   const folderIndicator = document.createElement('div');
   folderIndicator.className = 'folder-indicator';
   folderIndicator.dataset.folderType = folder.id;
-  
+
   const visual = document.createElement('div');
   visual.className = 'folder-visual folder-visual-small';
   visual.dataset.folderType = folder.id;
-  
+
   const label = document.createElement('span');
   label.className = 'folder-name';
   label.textContent = folder.name;
-  
+
   folderIndicator.appendChild(visual);
   folderIndicator.appendChild(label);
   folderIndicator.addEventListener('click', exitFolder);
@@ -374,19 +485,19 @@ function renderPresetsView() {
   const thumbW = 72;
   const thumbH = 72;
   const thumbCanvas = document.createElement('canvas');
-  thumbCanvas.width  = thumbW;
+  thumbCanvas.width = thumbW;
   thumbCanvas.height = thumbH;
   const tCtx = thumbCanvas.getContext('2d');
 
   // Draw a square crop of the original
   const src = state.originalImageData;
   const srcSize = Math.min(src.width, src.height);
-  const srcX = (src.width  - srcSize) / 2;
+  const srcX = (src.width - srcSize) / 2;
   const srcY = (src.height - srcSize) / 2;
 
   // Temp canvas to hold original at full size for drawImage
   const srcCanvas = document.createElement('canvas');
-  srcCanvas.width  = src.width;
+  srcCanvas.width = src.width;
   srcCanvas.height = src.height;
   srcCanvas.getContext('2d').putImageData(src, 0, 0);
 
@@ -399,7 +510,7 @@ function renderPresetsView() {
     item.dataset.id = preset.id;
 
     const previewCanvas = document.createElement('canvas');
-    previewCanvas.width  = thumbW;
+    previewCanvas.width = thumbW;
     previewCanvas.height = thumbH;
     previewCanvas.className = 'preset-thumb';
 
@@ -428,20 +539,20 @@ function renderPresetsView() {
 function enterFolder(folderId, folderIndex) {
   if (state.isTransitioning) return;
   state.isTransitioning = true;
-  
+
   state.currentFolderId = folderId;
   state.activeFolderIndex = folderIndex;
-  
+
   // Add transition class before changing view
   presetsTrack.classList.add('carousel-transition');
   presetsTrack.dataset.direction = 'enter';
-  
+
   // Render on next frame so CSS animation can detect the state change
   requestAnimationFrame(() => {
     renderPresetsView();
     updateFolderHeader();
   });
-  
+
   setTimeout(() => {
     presetsTrack.classList.remove('carousel-transition');
     presetsTrack.dataset.direction = '';
@@ -452,19 +563,21 @@ function enterFolder(folderId, folderIndex) {
 function exitFolder() {
   if (state.isTransitioning) return;
   state.isTransitioning = true;
-  
+
   // Add transition class before changing view
   presetsTrack.classList.add('carousel-transition');
   presetsTrack.dataset.direction = 'exit';
-  
+
   // Render on next frame so CSS animation can detect the state change
   requestAnimationFrame(() => {
     state.currentFolderId = null;
     state.activeFolderIndex = null;
+    state.activePresetId = 'original';  // ← reset preset
+    render();                            // ← redraw image to original
     renderFoldersView();
     updateFolderHeader();
   });
-  
+
   setTimeout(() => {
     presetsTrack.classList.remove('carousel-transition');
     presetsTrack.dataset.direction = '';
@@ -533,8 +646,8 @@ fileInput.addEventListener('change', (e) => {
 btnBack.addEventListener('click', () => {
   state.originalImageData = null;
   state.currentFolderId = null;
-  presetsTrack.innerHTML  = '';
-  canvas.width  = 0;
+  presetsTrack.innerHTML = '';
+  canvas.width = 0;
   canvas.height = 0;
   showScreen(screenHome);
 });
