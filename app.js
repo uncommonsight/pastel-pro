@@ -4,11 +4,10 @@
 // ============================================
 
 // --------------------------------------------
-//  PRESETS
-//  Each preset defines a color matrix + adjustments.
-//  Matrix is a 20-value array used with canvas pixel manipulation.
-//  Tweak values freely — you know what you're doing.
+//  PRESET FOLDERS
+//  Organize presets into folders with drill-down navigation.
 //
+//  Each preset defines a color matrix + adjustments.
 //  Matrix layout (applied per pixel):
 //  [ rR, rG, rB, rA, rConst,
 //    gR, gG, gB, gA, gConst,
@@ -20,95 +19,119 @@
 //  tint: { r, g, b } additive offset per channel (0–30 typical range)
 // --------------------------------------------
 
-const PRESETS = [
+const PRESET_FOLDERS = [
   {
-    id: 'original',
-    name: 'Original',
-    brightness: 1.0,
-    saturation: 1.0,
-    tint: { r: 0, g: 0, b: 0 },
-    fade: 0,
+    id: 'pastels',
+    name: 'Pastels',
+    presets: [
+      {
+        id: 'original',
+        name: 'Original',
+        brightness: 1.0,
+        saturation: 1.0,
+        tint: { r: 0, g: 0, b: 0 },
+        fade: 0,
+      },
+      {
+        id: 'blush',
+        name: 'Blush',
+        brightness: 1.08,
+        saturation: 1.25,
+        tint: { r: 28, g: 8, b: 12 },
+        fade: 10,
+      },
+      {
+        id: 'dusty-rose',
+        name: 'Dusty Rose',
+        brightness: 1.02,
+        saturation: 1.10,
+        tint: { r: 30, g: 10, b: 14 },
+        fade: 12,
+      },
+      {
+        id: 'peach',
+        name: 'Peach',
+        brightness: 1.10,
+        saturation: 1.15,
+        tint: { r: 30, g: 20, b: 4 },
+        fade: 8,
+      },
+      {
+        id: 'mist',
+        name: 'Mist',
+        brightness: 1.06,
+        saturation: 0.95,
+        tint: { r: 4, g: 16, b: 24 },
+        fade: 10,
+      },
+      {
+        id: 'lavender',
+        name: 'Lavender',
+        brightness: 1.04,
+        saturation: 1.00,
+        tint: { r: 17, g: 8, b: 24 },
+        fade: 10,
+      },
+      {
+        id: 'sage',
+        name: 'Sage',
+        brightness: 1.03,
+        saturation: 1.05,
+        tint: { r: 6, g: 20, b: 10 },
+        fade: 10,
+      },
+      {
+        id: 'cream',
+        name: 'Cream',
+        brightness: 1.12,
+        saturation: 0.85,
+        tint: { r: 28, g: 20, b: 10 },
+        fade: 12,
+      },
+      {
+        id: 'sky',
+        name: 'Sky',
+        brightness: 1.07,
+        saturation: 1.05,
+        tint: { r: 4, g: 18, b: 28 },
+        fade: 10,
+      },
+      {
+        id: 'apricot',
+        name: 'Apricot',
+        brightness: 1.06,
+        saturation: 1.15,
+        tint: { r: 28, g: 16, b: 4 },
+        fade: 8,
+      },
+      {
+        id: 'petal',
+        name: 'Petal',
+        brightness: 1.04,
+        saturation: 0.85,
+        tint: { r: 24, g: 10, b: 18 },
+        fade: 13,
+      },
+      {
+        id: 'cotton-candy',
+        name: 'Cotton Candy',
+        brightness: 1.08,
+        saturation: 1.10,
+        tint: { r: 24, g: 10, b: 23 },
+        fade: 10,
+      }
+    ]
   },
   {
-    id: 'blush',
-    name: 'Blush',
-    brightness: 1.08,
-    saturation: 1.25,
-    tint: { r: 28, g: 8, b: 12 },
-    fade: 10,
+    id: 'gradients',
+    name: 'Gradients',
+    presets: []
   },
   {
-    id: 'dusty-rose',
-    name: 'Dusty Rose',
-    brightness: 1.02,
-    saturation: 1.10,
-    tint: { r: 30, g: 10, b: 14 },
-    fade: 12,
-  },
-  {
-    id: 'peach',
-    name: 'Peach',
-    brightness: 1.10,
-    saturation: 1.15,
-    tint: { r: 30, g: 20, b: 4 },
-    fade: 8,
-  },
-  {
-    id: 'mist',
-    name: 'Mist',
-    brightness: 1.06,
-    saturation: 0.95,
-    tint: { r: 4, g: 16, b: 24 },
-    fade: 10,
-  },
-  {
-    id: 'lavender',
-    name: 'Lavender',
-    brightness: 1.04,
-    saturation: 1.00,
-    tint: { r: 17, g: 8, b: 24 },
-    fade: 10,
-  },
-  {
-    id: 'sage',
-    name: 'Sage',
-    brightness: 1.03,
-    saturation: 1.05,
-    tint: { r: 6, g: 20, b: 10 },
-    fade: 10,
-  },
-  {
-    id: 'cream',
-    name: 'Cream',
-    brightness: 1.12,
-    saturation: 0.85,
-    tint: { r: 28, g: 20, b: 10 },
-    fade: 12,
-  },
-  {
-    id: 'sky',
-    name: 'Sky',
-    brightness: 1.07,
-    saturation: 1.05,
-    tint: { r: 4, g: 18, b: 28 },
-    fade: 10,
-  },
-  {
-    id: 'apricot',
-    name: 'Apricot',
-    brightness: 1.06,
-    saturation: 1.15,
-    tint: { r: 28, g: 16, b: 4 },
-    fade: 8,
-  },
-  {
-    id: 'petal',
-    name: 'Petal',
-    brightness: 1.04,
-    saturation: 0.85,
-    tint: { r: 24, g: 10, b: 18 },
-    fade: 13,
-  },
+    id: 'monochrome',
+    name: 'Monochrome',
+    presets: []
+  }
 ];
 
 // --------------------------------------------
@@ -119,6 +142,9 @@ const state = {
   originalImageData: null,   // ImageData — never modified
   activePresetId: 'original',
   intensity: 100,            // 0–100
+  currentFolderId: null,     // null = viewing all folders, 'pastels'|'gradients'|'monochrome' = in folder
+  activeFolderIndex: null,   // Index of the active folder for carousel positioning
+  isTransitioning: false,    // Animation in progress
 };
 
 // --------------------------------------------
@@ -209,7 +235,14 @@ function applyPreset(imageData, preset, intensity) {
 function render() {
   if (!state.originalImageData) return;
 
-  const preset = PRESETS.find(p => p.id === state.activePresetId) || PRESETS[0];
+  // Find preset in folder structure
+  let preset = null;
+  for (const folder of PRESET_FOLDERS) {
+    preset = folder.presets.find(p => p.id === state.activePresetId);
+    if (preset) break;
+  }
+  if (!preset) preset = PRESET_FOLDERS[0].presets[0];
+
   const output = applyPreset(state.originalImageData, preset, state.intensity);
   ctx.putImageData(output, 0, 0);
 }
@@ -242,12 +275,14 @@ function loadImage(file) {
       state.originalImageData = ctx.getImageData(0, 0, w, h);
       state.activePresetId    = 'original';
       state.intensity         = 100;
+      state.currentFolderId   = null;  // Start at folder view
 
       intensitySlider.value = 100;
       intensityDisplay.textContent = '100';
       updateSliderTrack(100);
 
       buildPresetThumbnails();
+      updateFolderHeader();
       setActivePresetUI('original');
       render();
       showScreen(screenEditor);
@@ -259,12 +294,81 @@ function loadImage(file) {
 }
 
 // --------------------------------------------
-//  PRESET THUMBNAILS
-//  Draws a 72×72 canvas per preset using the loaded image.
+//  PRESET THUMBNAILS / FOLDER VIEW
+//  Renders either folder list or preset list with animations.
 // --------------------------------------------
 
 function buildPresetThumbnails() {
+  if (state.currentFolderId) {
+    renderPresetsView();
+  } else {
+    renderFoldersView();
+  }
+}
+
+function renderFoldersView() {
   presetsTrack.innerHTML = '';
+  presetsTrack.classList.remove('presets-view');
+  presetsTrack.classList.add('folders-view');
+  presetsTrack.dataset.state = 'folders';
+
+  PRESET_FOLDERS.forEach((folder, index) => {
+    const item = document.createElement('div');
+    item.className = 'folder-item';
+    item.dataset.id = folder.id;
+    item.dataset.folderType = folder.id;
+    item.dataset.folderIndex = index;
+    
+    const visual = document.createElement('div');
+    visual.className = 'folder-visual';
+    
+    const label = document.createElement('span');
+    label.className = 'folder-name';
+    label.textContent = folder.name;
+    
+    const count = document.createElement('span');
+    count.className = 'folder-count';
+    count.textContent = folder.presets.length;
+    
+    item.appendChild(visual);
+    item.appendChild(label);
+    item.appendChild(count);
+    item.addEventListener('click', () => enterFolder(folder.id, index));
+    
+    presetsTrack.appendChild(item);
+  });
+}
+
+function renderPresetsView() {
+  presetsTrack.innerHTML = '';
+  presetsTrack.classList.remove('folders-view');
+  presetsTrack.classList.add('presets-view');
+  presetsTrack.dataset.state = 'presets';
+
+  const folder = PRESET_FOLDERS.find(f => f.id === state.currentFolderId);
+  if (!folder) return;
+
+  // Create folder indicator on the left with full visual
+  const folderIndicator = document.createElement('div');
+  folderIndicator.className = 'folder-indicator';
+  folderIndicator.dataset.folderType = folder.id;
+  
+  const visual = document.createElement('div');
+  visual.className = 'folder-visual folder-visual-small';
+  visual.dataset.folderType = folder.id;
+  
+  const label = document.createElement('span');
+  label.className = 'folder-name';
+  label.textContent = folder.name;
+  
+  folderIndicator.appendChild(visual);
+  folderIndicator.appendChild(label);
+  folderIndicator.addEventListener('click', exitFolder);
+  presetsTrack.appendChild(folderIndicator);
+
+  // Create presets container
+  const presetsContainer = document.createElement('div');
+  presetsContainer.className = 'presets-container';
 
   // Downscale original to thumbnail size for performance
   const thumbW = 72;
@@ -289,7 +393,7 @@ function buildPresetThumbnails() {
   tCtx.drawImage(srcCanvas, srcX, srcY, srcSize, srcSize, 0, 0, thumbW, thumbH);
   const thumbBase = tCtx.getImageData(0, 0, thumbW, thumbH);
 
-  PRESETS.forEach(preset => {
+  folder.presets.forEach(preset => {
     const item = document.createElement('div');
     item.className = 'preset-item';
     item.dataset.id = preset.id;
@@ -303,16 +407,69 @@ function buildPresetThumbnails() {
     const filtered = applyPreset(thumbBase, preset, 100);
     pCtx.putImageData(filtered, 0, 0);
 
-    const label = document.createElement('span');
-    label.className = 'preset-name';
-    label.textContent = preset.name;
+    const labelEl = document.createElement('span');
+    labelEl.className = 'preset-name';
+    labelEl.textContent = preset.name;
 
     item.appendChild(previewCanvas);
-    item.appendChild(label);
+    item.appendChild(labelEl);
     item.addEventListener('click', () => selectPreset(preset.id));
 
-    presetsTrack.appendChild(item);
+    presetsContainer.appendChild(item);
   });
+
+  presetsTrack.appendChild(presetsContainer);
+}
+
+// --------------------------------------------
+//  FOLDER NAVIGATION
+// --------------------------------------------
+
+function enterFolder(folderId, folderIndex) {
+  if (state.isTransitioning) return;
+  state.isTransitioning = true;
+  
+  state.currentFolderId = folderId;
+  state.activeFolderIndex = folderIndex;
+  
+  // Add transition class before changing view
+  presetsTrack.classList.add('carousel-transition');
+  presetsTrack.dataset.direction = 'enter';
+  
+  // Render on next frame so CSS animation can detect the state change
+  requestAnimationFrame(() => {
+    renderPresetsView();
+    updateFolderHeader();
+  });
+  
+  setTimeout(() => {
+    presetsTrack.classList.remove('carousel-transition');
+    presetsTrack.dataset.direction = '';
+    state.isTransitioning = false;
+  }, 600);
+}
+
+function exitFolder() {
+  if (state.isTransitioning) return;
+  state.isTransitioning = true;
+  
+  // Add transition class before changing view
+  presetsTrack.classList.add('carousel-transition');
+  presetsTrack.dataset.direction = 'exit';
+  
+  // Render on next frame so CSS animation can detect the state change
+  requestAnimationFrame(() => {
+    state.currentFolderId = null;
+    state.activeFolderIndex = null;
+    renderFoldersView();
+    updateFolderHeader();
+  });
+  
+  setTimeout(() => {
+    presetsTrack.classList.remove('carousel-transition');
+    presetsTrack.dataset.direction = '';
+    state.isTransitioning = false;
+  }, 500);
 }
 
 // --------------------------------------------
@@ -333,6 +490,11 @@ function setActivePresetUI(presetId) {
   document.querySelectorAll('.preset-item').forEach(el => {
     el.classList.toggle('active', el.dataset.id === presetId);
   });
+}
+
+// Folder header no longer needed - using left-side folder indicator instead
+function updateFolderHeader() {
+  // Removed - folder indicator now built into presets view
 }
 
 // --------------------------------------------
@@ -370,6 +532,7 @@ fileInput.addEventListener('change', (e) => {
 
 btnBack.addEventListener('click', () => {
   state.originalImageData = null;
+  state.currentFolderId = null;
   presetsTrack.innerHTML  = '';
   canvas.width  = 0;
   canvas.height = 0;
