@@ -51,7 +51,7 @@ function loadImage(file) {
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
-      const maxDim = 4000;
+      const maxDim = 8192;
       let w = img.naturalWidth;
       let h = img.naturalHeight;
 
@@ -65,6 +65,8 @@ function loadImage(file) {
       canvas.height = h;
       document.documentElement.style.setProperty('--canvas-width', w + 'px');
 
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, 0, 0, w, h);
       state.originalImageData = ctx.getImageData(0, 0, w, h);
       state.activePresetId    = 'original';
