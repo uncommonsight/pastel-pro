@@ -1,7 +1,6 @@
 # Pastel You — Todo
 
 ## In Progress
-- [ ] Manifest + icon
 - [ ] Location off hard coded
 - [ ] Photos direct open
 - [ ] Intensity slider hide/show
@@ -21,3 +20,4 @@
 - [x] Monochrome presets
 - [x] JS modular refactor
 - [x] CSS modular refactor
+- [x] Manifest + icon
