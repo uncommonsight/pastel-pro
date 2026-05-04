@@ -24,11 +24,26 @@ function updateSliderTrack(value) {
   intensitySlider.style.setProperty('--val', value + '%');
 }
 
-function downloadImage() {
-  const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-  downloadAnchor.href = dataUrl;
-  downloadAnchor.download = 'pastelyou-edit.jpg';
-  downloadAnchor.click();
+async function downloadImage() {
+  const dataUrl = canvas.toDataURL('image/jpeg', 1.0);
+  
+  // Convert dataUrl to blob
+  const res = await fetch(dataUrl);
+  const blob = await res.blob();
+  const file = new File([blob], 'pastelyou-edit.jpg', { type: 'image/jpeg' });
+
+  // Use Web Share API if available (iOS Safari)
+  if (navigator.share && navigator.canShare({ files: [file] })) {
+    await navigator.share({
+      files: [file],
+    });
+  } else {
+    // Fallback for desktop
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = 'pastelyou-edit.jpg';
+    a.click();
+  }
 }
 
 function loadImage(file) {
