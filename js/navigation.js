@@ -149,6 +149,8 @@ function exitFolder() {
   presetsTrack.classList.add('carousel-transition');
   presetsTrack.dataset.direction = 'exit';
 
+  document.querySelector('.intensity-wrap').style.display = 'none';
+
   requestAnimationFrame(() => {
     state.currentFolderId = null;
     state.activeFolderIndex = null;
@@ -172,6 +174,7 @@ function selectPreset(presetId) {
   intensityDisplay.textContent = '100';
   updateSliderTrack(100);
   setActivePresetUI(presetId);
+  document.querySelector('.intensity-wrap').style.display = 'flex';
   render();
 }
 
