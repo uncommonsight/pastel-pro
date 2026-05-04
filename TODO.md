@@ -1,7 +1,6 @@
 # Pastel You — Todo
 
 ## In Progress
-- [ ] Location off hard coded
 - [ ] Photos direct open
 - [ ] Intensity slider hide/show
 - [ ] Save behavior
@@ -21,3 +20,4 @@
 - [x] JS modular refactor
 - [x] CSS modular refactor
 - [x] Manifest + icon
+- [x] Location off hard coded

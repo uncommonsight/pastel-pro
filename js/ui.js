@@ -73,6 +73,7 @@ function loadImage(file) {
 // Events
 btnPick.addEventListener('click', () => {
   fileInput.value = '';
+  fileInput.removeAttribute('capture'); // for mobile, to allow picking from gallery instead of camera
   fileInput.click();
 });
 
