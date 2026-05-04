@@ -51,7 +51,7 @@ function loadImage(file) {
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
-      const maxDim = 1200;
+      const maxDim = 4000;
       let w = img.naturalWidth;
       let h = img.naturalHeight;
 
