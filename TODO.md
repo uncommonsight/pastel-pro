@@ -1,7 +1,6 @@
 # Pastel You — Todo
 
 ## In Progress
-- [ ] Photos direct open
 - [ ] Intensity slider hide/show
 - [ ] Save behavior
 - [ ] iOS 26 subtle glass UI
@@ -21,3 +20,4 @@
 - [x] CSS modular refactor
 - [x] Manifest + icon
 - [x] Location off hard coded
+- [x] Photos direct open

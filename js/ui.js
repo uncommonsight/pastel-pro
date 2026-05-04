@@ -48,6 +48,7 @@ function loadImage(file) {
 
       canvas.width  = w;
       canvas.height = h;
+      document.documentElement.style.setProperty('--canvas-width', w + 'px');
 
       ctx.drawImage(img, 0, 0, w, h);
       state.originalImageData = ctx.getImageData(0, 0, w, h);

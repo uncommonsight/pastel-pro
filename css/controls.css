@@ -64,10 +64,13 @@
 
 /* Intensity Slider */
 .intensity-wrap {
-  display: flex;
+  display: none;
   align-items: center;
   gap: 12px;
-  padding: 0 20px;
+  padding: 0;
+  width: 100%;
+  max-width: var(--canvas-width, 600px);
+  margin: 0 auto;
 }
 
 .intensity-label {
