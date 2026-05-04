@@ -1,7 +1,6 @@
 # Pastel You — Todo
 
 ## In Progress
-- [ ] Intensity slider hide/show
 - [ ] Save behavior
 - [ ] iOS 26 subtle glass UI
 - [ ] Vibrant folder
@@ -21,3 +20,4 @@
 - [x] Manifest + icon
 - [x] Location off hard coded
 - [x] Photos direct open
+- [x] Intensity slider hide/show
