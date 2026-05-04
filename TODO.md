@@ -1,7 +1,6 @@
 # Pastel You — Todo
 
 ## In Progress
-- [ ] Save behavior
 - [ ] iOS 26 subtle glass UI
 - [ ] Vibrant folder
 - [ ] Night Glow folder
@@ -21,3 +20,4 @@
 - [x] Location off hard coded
 - [x] Photos direct open
 - [x] Intensity slider hide/show
+- [x] Save behavior
