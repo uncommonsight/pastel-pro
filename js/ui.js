@@ -25,7 +25,7 @@ function updateSliderTrack(value) {
 }
 
 async function downloadImage() {
-  const dataUrl = canvas.toDataURL('image/jpeg', 1.0);
+  const dataUrl = canvas.toDataURL('image/png');
   
   // Convert dataUrl to blob
   const res = await fetch(dataUrl);
@@ -51,7 +51,7 @@ function loadImage(file) {
   reader.onload = (e) => {
     const img = new Image();
     img.onload = () => {
-      const maxDim = 8192;
+      const maxDim = 4096;
       let w = img.naturalWidth;
       let h = img.naturalHeight;
 
