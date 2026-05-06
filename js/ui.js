@@ -27,21 +27,16 @@ function updateSliderTrack(value) {
 async function downloadImage() {
   const dataUrl = canvas.toDataURL('image/png');
   
-  // Convert dataUrl to blob
   const res = await fetch(dataUrl);
   const blob = await res.blob();
-  const file = new File([blob], 'pastelyou-edit.jpg', { type: 'image/jpeg' });
+  const file = new File([blob], 'pastelyou-edit.png', { type: 'image/png' });
 
-  // Use Web Share API if available (iOS Safari)
   if (navigator.share && navigator.canShare({ files: [file] })) {
-    await navigator.share({
-      files: [file],
-    });
+    await navigator.share({ files: [file] });
   } else {
-    // Fallback for desktop
     const a = document.createElement('a');
     a.href = dataUrl;
-    a.download = 'pastelyou-edit.jpg';
+    a.download = 'pastelyou-edit.png';
     a.click();
   }
 }
@@ -67,6 +62,10 @@ function loadImage(file) {
 
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = 'high';
+
+      state.sourceImg = img;
+
+      // Keep originalImageData as ImageData for thumbnail generation in navigation.js
       ctx.drawImage(img, 0, 0, w, h);
       state.originalImageData = ctx.getImageData(0, 0, w, h);
       state.activePresetId    = 'original';
@@ -101,6 +100,7 @@ fileInput.addEventListener('change', (e) => {
 });
 
 btnBack.addEventListener('click', () => {
+  state.sourceImg         = null;
   state.originalImageData = null;
   state.currentFolderId   = null;
   presetsTrack.innerHTML  = '';

@@ -75,17 +75,17 @@ function renderPresetsView() {
   const thumbW = 72;
   const thumbH = 72;
   const thumbCanvas = document.createElement('canvas');
-  thumbCanvas.width  = thumbW;
+  thumbCanvas.width = thumbW;
   thumbCanvas.height = thumbH;
   const tCtx = thumbCanvas.getContext('2d');
 
   const src = state.originalImageData;
   const srcSize = Math.min(src.width, src.height);
-  const srcX = (src.width  - srcSize) / 2;
+  const srcX = (src.width - srcSize) / 2;
   const srcY = (src.height - srcSize) / 2;
 
   const srcCanvas = document.createElement('canvas');
-  srcCanvas.width  = src.width;
+  srcCanvas.width = src.width;
   srcCanvas.height = src.height;
   srcCanvas.getContext('2d').putImageData(src, 0, 0);
 
@@ -98,7 +98,7 @@ function renderPresetsView() {
     item.dataset.id = preset.id;
 
     const previewCanvas = document.createElement('canvas');
-    previewCanvas.width  = thumbW;
+    previewCanvas.width = thumbW;
     previewCanvas.height = thumbH;
     previewCanvas.className = 'preset-thumb';
 
@@ -118,6 +118,10 @@ function renderPresetsView() {
   });
 
   presetsTrack.appendChild(presetsContainer);
+  // Reset scroll to start
+  presetsTrack.scrollLeft = 0;
+  const presetsScroll = document.querySelector('.presets-scroll');
+  if (presetsScroll) presetsScroll.scrollLeft = 0;
 }
 
 function enterFolder(folderId, folderIndex) {
