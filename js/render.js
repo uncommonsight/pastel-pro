@@ -8,38 +8,61 @@ function applyPreset(imageData, preset, intensity) {
   const data = out.data;
   const t    = intensity / 100;
 
-  const { brightness, saturation, tint, fade, contrast = 1.0 } = preset;
+  const { brightness, saturation, tint, fade, contrast = 1.0, warmth = 0, highlights = 0, shadows = 0 } = preset;
 
   for (let i = 0; i < data.length; i += 4) {
     let r = src[i];
     let g = src[i + 1];
     let b = src[i + 2];
 
+    // --- Brightness ---
     const bAdj = 1 + (brightness - 1) * t;
     r = r * bAdj;
     g = g * bAdj;
     b = b * bAdj;
 
+    // --- Saturation ---
     const lum = 0.299 * r + 0.587 * g + 0.114 * b;
     const sAdj = 1 + (saturation - 1) * t;
     r = lum + (r - lum) * sAdj;
     g = lum + (g - lum) * sAdj;
     b = lum + (b - lum) * sAdj;
 
+    // --- Tint ---
     r = r + tint.r * t;
     g = g + tint.g * t;
     b = b + tint.b * t;
 
+    // --- Fade ---
     const fadeAmt = fade * t;
     r = r + (255 - r) * (fadeAmt / 255);
     g = g + (255 - g) * (fadeAmt / 255);
     b = b + (255 - b) * (fadeAmt / 255);
 
+    // --- Contrast ---
     const cAdj = 1 + (contrast - 1) * t;
     r = (r - 128) * cAdj + 128;
     g = (g - 128) * cAdj + 128;
     b = (b - 128) * cAdj + 128;
 
+    // --- Warmth ---
+    const w = warmth * t;
+    r = r + w;
+    b = b - w;
+
+    // --- Highlights ---
+    const hAdj = highlights * t;
+    if (r > 128) r = 128 + (r - 128) * (1 + hAdj);
+    if (g > 128) g = 128 + (g - 128) * (1 + hAdj);
+    if (b > 128) b = 128 + (b - 128) * (1 + hAdj);
+
+    // --- Shadows ---
+    const shAdj = shadows * t;
+    if (r < 128) r = r * (1 + shAdj);
+    if (g < 128) g = g * (1 + shAdj);
+    if (b < 128) b = b * (1 + shAdj);
+
+    // --- Clamp ---
     data[i]     = Math.min(255, Math.max(0, r));
     data[i + 1] = Math.min(255, Math.max(0, g));
     data[i + 2] = Math.min(255, Math.max(0, b));

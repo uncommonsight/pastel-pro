@@ -153,6 +153,10 @@
   box-shadow: var(--shadow-sm);
 }
 
+.presets-track.folders-view {
+  justify-content: flex-start;
+}
+
 .folder-item[data-folder-type="pastels"] .folder-visual {
   background: radial-gradient(circle at 40% 40%, #f5bfe0 0%, #eca8d8 25%, #dfa0d4 45%, #c8a8e0 65%, #b8c8e8 100%);
   box-shadow: 0 0 24px rgba(200, 168, 224, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.3);
