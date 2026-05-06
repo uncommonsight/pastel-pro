@@ -49,8 +49,17 @@ function applyPreset(imageData, preset, intensity) {
 }
 
 function render() {
-  if (!state.originalImageData) return;
+  if (!state.sourceImg) return;
 
+  // Draw original image fresh from source — no pixel degradation
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(state.sourceImg, 0, 0, canvas.width, canvas.height);
+
+  // Grab fresh pixels from clean draw
+  const freshData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+  // Find active preset
   let preset = null;
   for (const folder of PRESET_FOLDERS) {
     preset = folder.presets.find(p => p.id === state.activePresetId);
@@ -58,10 +67,12 @@ function render() {
   }
   if (!preset) preset = PRESET_FOLDERS[0].presets[0];
 
-  const output = applyPreset(state.originalImageData, preset, state.intensity);
+  // Apply preset via pixel loop
+  const output = applyPreset(freshData, preset, state.intensity);
   ctx.putImageData(output, 0, 0);
 
-  if (preset && preset.gradient) {
+  // Gradient overlay
+  if (preset.gradient) {
     const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
     preset.gradient.stops.forEach(stop => {
       grad.addColorStop(stop.pos, `rgba(${stop.r}, ${stop.g}, ${stop.b}, ${stop.a * (state.intensity / 100)})`);

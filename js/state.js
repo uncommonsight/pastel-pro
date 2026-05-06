@@ -9,4 +9,5 @@ const state = {
   currentFolderId: null,
   activeFolderIndex: null,
   isTransitioning: false,
+  sourceImg: null,
 };

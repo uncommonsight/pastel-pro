@@ -1,23 +1,50 @@
 # Pastel You — Todo
 
-## In Progress
-- [ ] iOS 26 subtle glass UI
-- [ ] Vibrant folder
-- [ ] Night Glow folder
-- [ ] Preset stacking
-- [ ] Per-preset intensity slider
-- [ ] Editor (Exposure, Highlights, Shadows, Whites, Blacks, Contrast)
-- [ ] Original power editor with HSL per color
+## Next Up (in order)
+- [ ] Per-preset intensity slider — compact, resets per preset
+- [ ] Editor layer — delta system on top of preset base
+      - Sliders always at 0 on surface
+      - Preset values hidden underneath as base
+      - User moves = delta from base
+      - Swap preset = deltas reset, new base loads silently
+      - Works on Original (base = 0) and any preset
+      - Controls: Exposure, Highlights, Shadows,
+        Whites, Blacks, Contrast, Sat, Vibrance
+- [ ] Preset stacking — one per folder, renders as layers
+- [ ] Night Glow folder — moody, new controls needed
+- [ ] Original power editor — HSL per color channel
+- [ ] Custom preset saving
+- [ ] Icon update — more blue at bottom of gradient
+- [ ] App look and feel refresh + full glass UI pass
+
+## React Native Todo
+- [ ] Image pipeline refactor — proper solution in React Native
+- [ ] True lossless image pipeline using Core Image
+- [ ] GPU accelerated filters
+- [ ] Maximum quality JPEG/HEIC output
+- [ ] Direct photo library access — limited access only
+- [ ] Auto save to camera roll with confirmation message
+      "Image saved!" toast notification
+- [ ] Save straight to Photos then return home
 
 ## Completed
-- [x] Folder navigation
 - [x] Pastel presets tuned
-- [x] Gradient presets
-- [x] Monochrome presets
+- [x] Cotton Candy preset
+- [x] Gradient presets (Golden Hour, Blue Hour, Rose Sky)
+- [x] Monochrome presets (Classic, Soft, Dramatic)
+- [x] Contrast parameter in preset engine
+- [x] Folder navigation
+- [x] Preset strip centered
 - [x] JS modular refactor
 - [x] CSS modular refactor
-- [x] Manifest + icon
-- [x] Location off hard coded
-- [x] Photos direct open
+- [x] Manifest + PWA icons
+- [x] Location hard coded off
 - [x] Intensity slider hide/show
-- [x] Save behavior
+- [x] Intensity slider width matches image
+- [x] Save uses native iOS share sheet
+- [x] PNG output for quality
+- [x] imageSmoothingQuality high
+- [x] sourceImg stored in state for cleaner renders
+- [x] gitignore + clean repo
+- [x] README + TODO
+- [x] Vibrant folder — same shades, no fade, contrast bump, punchy
