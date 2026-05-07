@@ -48,9 +48,18 @@
   <div id="screen-editor" class="screen">
 
     <header class="editor-header">
-      <button id="btn-back" class="btn-icon">✕</button>
-      <span class="editor-title">Pastel You</span>
-      <button id="btn-download" class="btn-save">Save</button>
+      <div class="header-left">
+        <button id="btn-close" class="btn-header">✕</button>
+        <button id="btn-back-folder" class="btn-header">←</button>
+        <button id="btn-undo" class="btn-header">↺</button>
+      </div>
+      <div class="header-center">
+        <span class="editor-title">Pastel You</span>
+        <span class="preset-name-display" id="preset-name-display"></span>
+      </div>
+      <div class="header-right">
+        <button id="btn-download" class="btn-header">Save</button>
+      </div>
     </header>
 
     <div class="canvas-container">
@@ -64,8 +73,106 @@
         <span class="intensity-value" id="intensity-display">100</span>
       </div>
 
-      <div class="presets-scroll">
-        <div class="presets-track" id="presets-track"></div>
+      <div class="edit-icon-wrap" id="edit-icon-wrap">
+        <button id="btn-edit" class="btn-edit-icon">
+          <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
+            <circle cx="5" cy="2" r="1.5" fill="currentColor" />
+            <line x1="0" y1="2" x2="20" y2="2" stroke="currentColor" stroke-width="1.5" />
+            <circle cx="13" cy="7" r="1.5" fill="currentColor" />
+            <line x1="0" y1="7" x2="20" y2="7" stroke="currentColor" stroke-width="1.5" />
+            <circle cx="7" cy="12" r="1.5" fill="currentColor" />
+            <line x1="0" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="1.5" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Editor Panel -->
+      <div class="editor-bubble" id="editor-bubble">
+        <div class="editor-panel-scroll">
+
+          <!-- White Balance -->
+          <div class="editor-section">
+            <span class="editor-section-label">White Balance</span>
+            <div class="editor-row">
+              <span class="editor-row-label">Warmth</span>
+              <input type="range" class="editor-slider" id="edit-warmth" min="-30" max="30" value="0" step="1" />
+              <span class="editor-row-value" id="edit-warmth-val">0</span>
+            </div>
+          </div>
+
+          <!-- Light -->
+          <div class="editor-section">
+            <span class="editor-section-label">Light</span>
+            <div class="editor-row">
+              <span class="editor-row-label">Exposure</span>
+              <input type="range" class="editor-slider" id="edit-exposure" min="-0.5" max="0.5" value="0" step="0.01" />
+              <span class="editor-row-value" id="edit-exposure-val">0</span>
+            </div>
+            <div class="editor-row">
+              <span class="editor-row-label">Highlights</span>
+              <input type="range" class="editor-slider" id="edit-highlights" min="-0.5" max="0.5" value="0.01"
+                step="0.01" />
+              <span class="editor-row-value" id="edit-highlights-val">0</span>
+            </div>
+            <div class="editor-row">
+              <span class="editor-row-label">Shadows</span>
+              <input type="range" class="editor-slider" id="edit-shadows" min="-0.5" max="0.5" value="0" step="0.01" />
+              <span class="editor-row-value" id="edit-shadows-val">0</span>
+            </div>
+            <div class="editor-row">
+              <span class="editor-row-label">Whites</span>
+              <input type="range" class="editor-slider" id="edit-whites" min="-0.5" max="0.5" value="0" step="0.01" />
+              <span class="editor-row-value" id="edit-whites-val">0</span>
+            </div>
+            <div class="editor-row">
+              <span class="editor-row-label">Blacks</span>
+              <input type="range" class="editor-slider" id="edit-blacks" min="-0.5" max="0.5" value="0" step="0.01" />
+              <span class="editor-row-value" id="edit-blacks-val">0</span>
+            </div>
+          </div>
+
+          <!-- Detail -->
+          <div class="editor-section">
+            <span class="editor-section-label">Detail</span>
+            <div class="editor-row">
+              <span class="editor-row-label">Contrast</span>
+              <input type="range" class="editor-slider" id="edit-contrast" min="-0.5" max="0.5" value="0" step="0.01" />
+              <span class="editor-row-value" id="edit-contrast-val">0</span>
+            </div>
+            <div class="editor-row">
+              <span class="editor-row-label">Saturation</span>
+              <input type="range" class="editor-slider" id="edit-saturation" min="-0.8" max="0.8" value="0"
+                step="0.01" />
+              <span class="editor-row-value" id="edit-saturation-val">0</span>
+            </div>
+          </div>
+
+          <!-- Color -->
+          <div class="editor-section">
+            <span class="editor-section-label">Color</span>
+            <div class="color-chips">
+              <button class="color-chip" data-color="red" style="background:#e57373;">R</button>
+              <button class="color-chip" data-color="orange" style="background:#ffb74d;">O</button>
+              <button class="color-chip" data-color="yellow" style="background:#fff176;">Y</button>
+              <button class="color-chip" data-color="green" style="background:#81c784;">G</button>
+              <button class="color-chip" data-color="cyan" style="background:#4dd0e1;">C</button>
+              <button class="color-chip" data-color="blue" style="background:#64b5f6;">B</button>
+              <button class="color-chip" data-color="purple" style="background:#ba68c8;">P</button>
+            </div>
+            <div class="color-sat-row" id="color-sat-row" style="display:none;">
+              <span class="editor-row-label" id="color-sat-label">Red Sat</span>
+              <input type="range" class="editor-slider" id="edit-color-sat" min="-1" max="1" value="0" step="0.01" />
+              <span class="editor-row-value" id="edit-color-sat-val">0</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="preset-bubble">
+        <div class="presets-scroll">
+          <div class="presets-track" id="presets-track"></div>
+        </div>
       </div>
     </div>
 
