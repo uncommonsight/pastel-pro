@@ -15,6 +15,8 @@ function renderFoldersView() {
   presetsTrack.classList.remove('presets-view');
   presetsTrack.classList.add('folders-view');
   presetsTrack.dataset.state = 'folders';
+  document.getElementById('btn-back-folder').style.display = 'none';
+  document.getElementById('edit-icon-wrap').classList.add('visible');
 
   PRESET_FOLDERS.forEach((folder, index) => {
     const item = document.createElement('div');
@@ -91,6 +93,7 @@ function renderPresetsView() {
 
   tCtx.drawImage(srcCanvas, srcX, srcY, srcSize, srcSize, 0, 0, thumbW, thumbH);
   const thumbBase = tCtx.getImageData(0, 0, thumbW, thumbH);
+  document.getElementById('btn-back-folder').style.display = 'block';
 
   folder.presets.forEach(preset => {
     const item = document.createElement('div');
@@ -154,6 +157,7 @@ function exitFolder() {
   presetsTrack.dataset.direction = 'exit';
 
   document.querySelector('.intensity-wrap').style.display = 'none';
+  // document.getElementById('edit-icon-wrap').classList.remove('visible');
 
   requestAnimationFrame(() => {
     state.currentFolderId = null;
@@ -169,6 +173,12 @@ function exitFolder() {
     presetsTrack.dataset.direction = '';
     state.isTransitioning = false;
   }, 500);
+
+  const nameDisplay = document.getElementById('preset-name-display');
+  if (nameDisplay) {
+    nameDisplay.textContent = '';
+    nameDisplay.classList.remove('visible');
+  }
 }
 
 function selectPreset(presetId) {
@@ -180,6 +190,23 @@ function selectPreset(presetId) {
   setActivePresetUI(presetId);
   document.querySelector('.intensity-wrap').style.display = 'flex';
   render();
+  document.getElementById('edit-icon-wrap').classList.add('visible');
+
+  // Show preset name under title
+  const nameDisplay = document.getElementById('preset-name-display');
+  const preset = findPreset(presetId);
+  if (nameDisplay && preset) {
+    nameDisplay.textContent = preset.name.toLowerCase();
+    nameDisplay.classList.add('visible');
+  }
+}
+
+function findPreset(presetId) {
+  for (const folder of PRESET_FOLDERS) {
+    const found = folder.presets.find(p => p.id === presetId);
+    if (found) return found;
+  }
+  return null;
 }
 
 function setActivePresetUI(presetId) {

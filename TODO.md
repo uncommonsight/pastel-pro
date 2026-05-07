@@ -1,18 +1,7 @@
 # Pastel You — Todo
 
 ## Next Up (in order)
-- [ ] Per-preset intensity slider — compact, resets per preset
-- [ ] Editor layer — delta system on top of preset base
-      - Sliders always at 0 on surface
-      - Preset values hidden underneath as base
-      - User moves = delta from base
-      - Swap preset = deltas reset, new base loads silently
-      - Works on Original (base = 0) and any preset
-      - Controls: Exposure, Highlights, Shadows,
-        Whites, Blacks, Contrast, Sat, Vibrance
 - [ ] Preset stacking — one per folder, renders as layers
-- [ ] Night Glow folder — moody, new controls needed
-- [ ] Original power editor — HSL per color channel
 - [ ] Custom preset saving
 - [ ] Icon update — more blue at bottom of gradient
 - [ ] App look and feel refresh + full glass UI pass
@@ -48,3 +37,14 @@
 - [x] gitignore + clean repo
 - [x] README + TODO
 - [x] Vibrant folder — same shades, no fade, contrast bump, punchy
+- [x] Per-preset intensity slider — compact, resets per preset
+- [x] Editor layer — delta system on top of preset base
+      - Sliders always at 0 on surface
+      - Preset values hidden underneath as base
+      - User moves = delta from base
+      - Swap preset = deltas reset, new base loads silently
+      - Works on Original (base = 0) and any preset
+      - Controls: Exposure, Highlights, Shadows,
+        Whites, Blacks, Contrast, Sat, Vibrance
+- [x] Night Glow folder — moody, new controls needed
+- [x] Original power editor — HSL per color channel

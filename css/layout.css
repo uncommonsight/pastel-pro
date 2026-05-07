@@ -112,6 +112,75 @@
   color: var(--text-dark);
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 80px;
+}
+
+.header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 80px;
+}
+
+/* Preset name — fades in under title when preset selected */
+.preset-name-display {
+  font-family: 'Jost', sans-serif;
+  font-weight: 200;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  color: var(--text-light);
+  text-transform: lowercase;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  height: 16px;
+}
+
+.preset-name-display.visible {
+  opacity: 1;
+}
+
+/* Header buttons */
+.btn-header {
+  background: none;
+  border: none;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  color: var(--text-mid);
+  cursor: pointer;
+  padding: 8px;
+  -webkit-appearance: none;
+  transition: opacity 0.15s ease;
+}
+
+.btn-header:active {
+  opacity: 0.5;
+}
+
+/* Preset bubble */
+.preset-bubble {
+  background: var(--text-dark);
+  border-radius: 20px;
+  margin: 0 12px 12px;
+  box-shadow: var(--shadow);
+  padding: 12px 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
 /* Canvas */
 .canvas-container {
   flex: 1;

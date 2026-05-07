@@ -2,20 +2,36 @@
 //  RENDER — filter engine and canvas drawing
 // ============================================
 
-function applyPreset(imageData, preset, intensity) {
-  const src  = imageData.data;
-  const out  = new ImageData(new Uint8ClampedArray(src), imageData.width, imageData.height);
-  const data = out.data;
-  const t    = intensity / 100;
+let renderTimeout = null;
 
-  const { brightness, saturation, tint, fade, contrast = 1.0, warmth = 0, highlights = 0, shadows = 0 } = preset;
+function scheduleRender() {
+  if (renderTimeout) cancelAnimationFrame(renderTimeout);
+  renderTimeout = requestAnimationFrame(render);
+}
+
+function applyPreset(imageData, preset, intensity) {
+  const src = imageData.data;
+  const out = new ImageData(new Uint8ClampedArray(src), imageData.width, imageData.height);
+  const data = out.data;
+  const t = intensity / 100;
+  const ed = state.editor;
+
+  const { tint, fade } = preset;
+
+  // Merge preset base + editor deltas
+  const brightness = preset.brightness + ed.exposure;
+  const saturation = (preset.saturation || 1.0) + ed.saturation;
+  const contrast = (preset.contrast || 1.0) + ed.contrast;
+  const warmth = (preset.warmth || 0) + ed.warmth;
+  const highlights = (preset.highlights || 0) + ed.highlights;
+  const shadows = (preset.shadows || 0) + ed.shadows;
 
   for (let i = 0; i < data.length; i += 4) {
     let r = src[i];
     let g = src[i + 1];
     let b = src[i + 2];
 
-    // --- Brightness ---
+    // --- Brightness + Exposure ---
     const bAdj = 1 + (brightness - 1) * t;
     r = r * bAdj;
     g = g * bAdj;
@@ -62,8 +78,54 @@ function applyPreset(imageData, preset, intensity) {
     if (g < 128) g = g * (1 + shAdj);
     if (b < 128) b = b * (1 + shAdj);
 
+    // --- Whites (lifts very bright areas) ---
+    const wh = ed.whites * t;
+    if (r > 175) r = r + (255 - r) * wh;
+    if (g > 175) g = g + (255 - g) * wh;
+    if (b > 175) b = b + (255 - b) * wh;
+
+    // --- Blacks (crushes very dark areas) ---
+    const bl = ed.blacks * t;
+    if (r < 95) r = r * (1 + bl);
+    if (g < 95) g = g * (1 + bl);
+    if (b < 95) b = b * (1 + bl);
+
+    // --- Color Sat (HSL per channel) ---
+    const colorSat = state.editor.colorSat;
+
+    // Get hue of pixel to determine which channel it belongs to
+    const maxC = Math.max(r, g, b);
+    const minC = Math.min(r, g, b);
+    const delta = maxC - minC;
+
+    if (delta > 10) {
+      let hue = 0;
+      if (maxC === r) hue = ((g - b) / delta) % 6;
+      else if (maxC === g) hue = (b - r) / delta + 2;
+      else hue = (r - g) / delta + 4;
+      hue = Math.round(hue * 60);
+      if (hue < 0) hue += 360;
+
+      let satAdj = 0;
+      if (hue >= 330 || hue < 20) satAdj = colorSat.red || 0;
+      else if (hue < 50) satAdj = colorSat.orange || 0;
+      else if (hue < 80) satAdj = colorSat.yellow || 0;
+      else if (hue < 180) satAdj = colorSat.green || 0;
+      else if (hue < 230) satAdj = colorSat.cyan || 0;
+      else if (hue < 290) satAdj = colorSat.blue || 0;
+      else if (hue < 330) satAdj = colorSat.purple || 0;
+
+      if (satAdj !== 0) {
+        const lum2 = 0.299 * r + 0.587 * g + 0.114 * b;
+        const csAdj = 1 + (satAdj * 2);
+        r = lum2 + (r - lum2) * csAdj;
+        g = lum2 + (g - lum2) * csAdj;
+        b = lum2 + (b - lum2) * csAdj;
+      }
+    }
+
     // --- Clamp ---
-    data[i]     = Math.min(255, Math.max(0, r));
+    data[i] = Math.min(255, Math.max(0, r));
     data[i + 1] = Math.min(255, Math.max(0, g));
     data[i + 2] = Math.min(255, Math.max(0, b));
   }
@@ -74,15 +136,12 @@ function applyPreset(imageData, preset, intensity) {
 function render() {
   if (!state.sourceImg) return;
 
-  // Draw original image fresh from source — no pixel degradation
   ctx.imageSmoothingEnabled = true;
   ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(state.sourceImg, 0, 0, canvas.width, canvas.height);
 
-  // Grab fresh pixels from clean draw
   const freshData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-  // Find active preset
   let preset = null;
   for (const folder of PRESET_FOLDERS) {
     preset = folder.presets.find(p => p.id === state.activePresetId);
@@ -90,11 +149,9 @@ function render() {
   }
   if (!preset) preset = PRESET_FOLDERS[0].presets[0];
 
-  // Apply preset via pixel loop
   const output = applyPreset(freshData, preset, state.intensity);
   ctx.putImageData(output, 0, 0);
 
-  // Gradient overlay
   if (preset.gradient) {
     const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
     preset.gradient.stops.forEach(stop => {
