@@ -42,6 +42,9 @@ function renderFoldersView() {
     item.addEventListener('click', () => enterFolder(folder.id, index));
 
     presetsTrack.appendChild(item);
+
+    const presetsScroll = document.querySelector('.presets-scroll');
+    if (presetsScroll) presetsScroll.scrollLeft = 0;
   });
 }
 
@@ -156,14 +159,9 @@ function exitFolder() {
   presetsTrack.classList.add('carousel-transition');
   presetsTrack.dataset.direction = 'exit';
 
-  document.querySelector('.intensity-wrap').style.display = 'none';
-  // document.getElementById('edit-icon-wrap').classList.remove('visible');
-
   requestAnimationFrame(() => {
     state.currentFolderId = null;
     state.activeFolderIndex = null;
-    state.activePresetId = 'original';
-    render();
     renderFoldersView();
     updateFolderHeader();
   });
@@ -173,32 +171,52 @@ function exitFolder() {
     presetsTrack.dataset.direction = '';
     state.isTransitioning = false;
   }, 500);
-
-  const nameDisplay = document.getElementById('preset-name-display');
-  if (nameDisplay) {
-    nameDisplay.textContent = '';
-    nameDisplay.classList.remove('visible');
-  }
 }
 
 function selectPreset(presetId) {
+  // Toggle off if tapping the same preset
+  if (state.activePresetId === presetId) {
+    state.activePresetId = 'original';
+    state.intensity = 100;
+    intensitySlider.value = 100;
+    intensityDisplay.textContent = '100';
+    updateSliderTrack(100);
+    setActivePresetUI(null);
+    document.querySelector('.intensity-wrap').style.display = 'none';
+    const nameDisplay = document.getElementById('preset-name-display');
+    if (nameDisplay) {
+      nameDisplay.textContent = '';
+      nameDisplay.classList.remove('visible');
+    }
+    render();
+    return;
+  }
+
   state.activePresetId = presetId;
   state.intensity = 100;
   intensitySlider.value = 100;
   intensityDisplay.textContent = '100';
   updateSliderTrack(100);
   setActivePresetUI(presetId);
-  document.querySelector('.intensity-wrap').style.display = 'flex';
-  render();
-  document.getElementById('edit-icon-wrap').classList.add('visible');
 
-  // Show preset name under title
+  // Show strength only if not original and editor closed
+  const editorBubble = document.getElementById('editor-bubble');
+  const intensityWrap = document.querySelector('.intensity-wrap');
+  if (presetId !== 'original' && !editorBubble.classList.contains('open')) {
+    intensityWrap.style.display = 'flex';
+  } else {
+    intensityWrap.style.display = 'none';
+  }
+
+  // Show preset name
   const nameDisplay = document.getElementById('preset-name-display');
   const preset = findPreset(presetId);
   if (nameDisplay && preset) {
     nameDisplay.textContent = preset.name.toLowerCase();
     nameDisplay.classList.add('visible');
   }
+
+  render();
 }
 
 function findPreset(presetId) {
