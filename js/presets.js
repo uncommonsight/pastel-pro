@@ -213,6 +213,39 @@ const PRESET_FOLDERS = [
           ]
         }
       },
+      {
+        id: 'cotton-sky',
+        name: 'Cotton Sky',
+        brightness: 1.05,
+        saturation: 1.08,
+        tint: { r: 18, g: 8, b: 20 },
+        fade: 5,
+        gradient: {
+          type: 'linear-top',
+          stops: [
+            { pos: 0.0, r: 235, g: 120, b: 215, a: 0.58 },
+            { pos: 0.4, r: 130, g: 150, b: 235, a: 0.30 },
+            { pos: 0.7, r: 185, g: 115, b: 225, a: 0.14 },
+            { pos: 1.0, r: 0, g: 0, b: 0, a: 0.0 },
+          ]
+        }
+      },
+      {
+        id: 'lavender-sky',
+        name: 'Lavender Sky',
+        brightness: 1.04,
+        saturation: 1.02,
+        tint: { r: 10, g: 6, b: 18 },
+        fade: 6,
+        gradient: {
+          type: 'linear-top',
+          stops: [
+            { pos: 0.0, r: 160, g: 110, b: 210, a: 0.45 },
+            { pos: 0.5, r: 140, g: 90, b: 190, a: 0.12 },
+            { pos: 1.0, r: 0, g: 0, b: 0, a: 0.0 },
+          ]
+        }
+      },
     ]
   },
   {
