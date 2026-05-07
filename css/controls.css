@@ -67,10 +67,10 @@
   display: none;
   align-items: center;
   gap: 12px;
-  padding: 0;
+  padding: 0 28px;
   width: 100%;
-  max-width: var(--canvas-width, 600px);
-  margin: 0 auto;
+  box-sizing: border-box;
+  max-width: 100%;
 }
 
 .intensity-label {

@@ -17,6 +17,7 @@ const state = {
     whites: 0,
     blacks: 0,
     contrast: 0,
+    fade: 0,
     saturation: 0,
     warmth: 0,
     colorSat: { red: 0, orange: 0, yellow: 0, green: 0, cyan: 0, blue: 0, purple: 0 },

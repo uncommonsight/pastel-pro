@@ -16,15 +16,16 @@ function applyPreset(imageData, preset, intensity) {
   const t = intensity / 100;
   const ed = state.editor;
 
-  const { tint, fade } = preset;
+  const { tint } = preset;
 
   // Merge preset base + editor deltas
   const brightness = preset.brightness + ed.exposure;
-  const saturation = (preset.saturation || 1.0) + ed.saturation;
-  const contrast = (preset.contrast || 1.0) + ed.contrast;
-  const warmth = (preset.warmth || 0) + ed.warmth;
-  const highlights = (preset.highlights || 0) + ed.highlights;
-  const shadows = (preset.shadows || 0) + ed.shadows;
+  const saturation = (preset.saturation !== undefined ? preset.saturation : 1.0) + ed.saturation;
+  const contrast = (preset.contrast !== undefined ? preset.contrast : 1.0) + ed.contrast;
+  const fade = (preset.fade !== undefined ? preset.fade : 0) + ed.fade;
+  const warmth = (preset.warmth !== undefined ? preset.warmth : 0) + ed.warmth;
+  const highlights = (preset.highlights !== undefined ? preset.highlights : 0) + ed.highlights;
+  const shadows = (preset.shadows !== undefined ? preset.shadows : 0) + ed.shadows;
 
   for (let i = 0; i < data.length; i += 4) {
     let r = src[i];

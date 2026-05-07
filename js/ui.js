@@ -17,15 +17,35 @@ const presetsTrack = document.getElementById('presets-track');
 const intensitySlider = document.getElementById('intensity-slider');
 const intensityDisplay = document.getElementById('intensity-display');
 
+// Compare to Original - hold to preview, release to restore
+let compareTimeout = null;
+
+canvas.addEventListener('pointerdown', () => {
+  compareTimeout = setTimeout(() => {
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(state.sourceImg, 0, 0, canvas.width, canvas.height);
+  }, 100);
+});
+
+document.addEventListener('pointerup', () => {
+  clearTimeout(compareTimeout);
+  if (compareTimeout !== null) {
+    render();
+    compareTimeout = null;
+  }
+});
+
 const editorSliders = [
-  { id: 'edit-exposure',   key: 'exposure',   valId: 'edit-exposure-val',   decimals: 2 },
-  { id: 'edit-highlights', key: 'highlights',  valId: 'edit-highlights-val', decimals: 2 },
-  { id: 'edit-shadows',    key: 'shadows',     valId: 'edit-shadows-val',    decimals: 2 },
-  { id: 'edit-whites',     key: 'whites',      valId: 'edit-whites-val',     decimals: 2 },
-  { id: 'edit-blacks',     key: 'blacks',      valId: 'edit-blacks-val',     decimals: 2 },
-  { id: 'edit-contrast',   key: 'contrast',    valId: 'edit-contrast-val',   decimals: 2 },
-  { id: 'edit-saturation', key: 'saturation',  valId: 'edit-saturation-val', decimals: 2 },
-  { id: 'edit-warmth',     key: 'warmth',      valId: 'edit-warmth-val',     decimals: 0 },
+  { id: 'edit-exposure', key: 'exposure', valId: 'edit-exposure-val', decimals: 2 },
+  { id: 'edit-highlights', key: 'highlights', valId: 'edit-highlights-val', decimals: 2 },
+  { id: 'edit-shadows', key: 'shadows', valId: 'edit-shadows-val', decimals: 2 },
+  { id: 'edit-whites', key: 'whites', valId: 'edit-whites-val', decimals: 2 },
+  { id: 'edit-blacks', key: 'blacks', valId: 'edit-blacks-val', decimals: 2 },
+  { id: 'edit-contrast', key: 'contrast', valId: 'edit-contrast-val', decimals: 2 },
+  { id: 'edit-fade', key: 'fade', valId: 'edit-fade-val', decimals: 1 },
+  { id: 'edit-saturation', key: 'saturation', valId: 'edit-saturation-val', decimals: 2 },
+  { id: 'edit-warmth', key: 'warmth', valId: 'edit-warmth-val', decimals: 0 },
 ];
 
 function showScreen(screenEl) {
@@ -145,14 +165,15 @@ function loadImage(file) {
 
 function resetEditorState() {
   state.editor = {
-    exposure:   0,
+    exposure: 0,
     highlights: 0,
-    shadows:    0,
-    whites:     0,
-    blacks:     0,
-    contrast:   0,
+    shadows: 0,
+    whites: 0,
+    blacks: 0,
+    contrast: 0,
+    fade: 0,
     saturation: 0,
-    warmth:     0,
+    warmth: 0,
     colorSat: { red: 0, orange: 0, yellow: 0, green: 0, cyan: 0, blue: 0, purple: 0 },
   };
 
@@ -298,15 +319,19 @@ const editorBubble = document.getElementById('editor-bubble');
 btnEdit.addEventListener('click', () => {
   const isOpen = editorBubble.classList.contains('open');
   const presetBubble = document.querySelector('.preset-bubble');
+  const intensityWrap = document.querySelector('.intensity-wrap');
 
   if (isOpen) {
     editorBubble.classList.remove('open');
     presetBubble.classList.remove('shrunk');
-    document.querySelector('.intensity-wrap').style.display = 'flex';
+    // Show strength only if preset is active
+    if (state.activePresetId !== 'original') {
+      intensityWrap.style.display = 'flex';
+    }
   } else {
     editorBubble.classList.add('open');
     presetBubble.classList.add('shrunk');
-    document.querySelector('.intensity-wrap').style.display = 'none';
+    intensityWrap.style.display = 'none';
   }
 });
 
@@ -318,4 +343,20 @@ intensitySlider.addEventListener('input', (e) => {
   intensityDisplay.textContent = val;
   updateSliderTrack(val);
   scheduleRender();
+});
+
+document.getElementById('preset-name-display').addEventListener('click', () => {
+  if (state.activePresetId && state.activePresetId !== 'original') {
+    state.activePresetId = 'original';
+    state.intensity = 100;
+    intensitySlider.value = 100;
+    intensityDisplay.textContent = '100';
+    updateSliderTrack(100);
+    setActivePresetUI(null);
+    document.querySelector('.intensity-wrap').style.display = 'none';
+    const nameDisplay = document.getElementById('preset-name-display');
+    nameDisplay.textContent = '';
+    nameDisplay.classList.remove('visible');
+    render();
+  }
 });
