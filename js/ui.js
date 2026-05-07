@@ -291,6 +291,22 @@ btnClose.addEventListener('click', () => {
   presetsTrack.innerHTML = '';
   canvas.width = 0;
   canvas.height = 0;
+
+  // Reset preset name
+  const nameDisplay = document.getElementById('preset-name-display');
+  if (nameDisplay) {
+    nameDisplay.textContent = '';
+    nameDisplay.classList.remove('visible');
+  }
+
+  // Reset editor
+  resetEditorState();
+
+  // Hide strength and editor
+  document.querySelector('.intensity-wrap').style.display = 'none';
+  document.getElementById('editor-bubble').classList.remove('open');
+  document.querySelector('.preset-bubble').classList.remove('shrunk');
+
   showScreen(screenHome);
 });
 
