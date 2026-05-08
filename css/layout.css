@@ -265,6 +265,9 @@
   box-shadow: var(--shadow);
   cursor: grab;
   touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 #crop-canvas:active {
