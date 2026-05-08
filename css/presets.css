@@ -228,6 +228,11 @@
   box-shadow: 0 0 18px rgba(216, 180, 254, 0.20), inset 0 0 10px rgba(255, 255, 255, 0.12);
 }
 
+.folder-item[data-folder-type="retro"] .folder-visual {
+  background: linear-gradient(135deg, #f7c068 0%, #f0a84a 30%, #5a8a6a 65%, #3a6a50 100%);
+  box-shadow: 0 0 18px rgba(247, 192, 104, 0.20), inset 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
 .folder-item[data-folder-type="noir"] .folder-visual {
   background: radial-gradient(circle at 35% 35%, #888888 0%, #606060 40%, #383838 100%);
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.08);
@@ -251,6 +256,11 @@
 .folder-indicator[data-folder-type="glow"] .folder-visual-small {
   background: radial-gradient(circle at 40% 40%, #d8b4fe 0%, #a5b4fc 35%, #6d5fa6 65%, #2e2450 100%);
   box-shadow: 0 0 18px rgba(216, 180, 254, 0.20), inset 0 0 10px rgba(255, 255, 255, 0.12);
+}
+
+.folder-indicator[data-folder-type="retro"] .folder-visual-small {
+  background: linear-gradient(135deg, #f7c068 0%, #f0a84a 30%, #5a8a6a 65%, #3a6a50 100%);
+  box-shadow: 0 0 18px rgba(247, 192, 104, 0.20), inset 0 0 12px rgba(255, 255, 255, 0.08);
 }
 
 .folder-indicator[data-folder-type="noir"] .folder-visual-small {

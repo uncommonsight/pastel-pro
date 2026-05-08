@@ -294,3 +294,92 @@ input[type="range"]:active::-webkit-slider-thumb {
   align-items: center;
   gap: 12px;
 }
+
+/* ============================================
+   CROP BUBBLE
+   ============================================ */
+
+.crop-lock-row {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 16px;
+}
+
+.crop-lock-btn {
+  background: none;
+  border: none;
+  color: var(--text-mid);
+  cursor: pointer;
+  padding: 4px;
+  -webkit-appearance: none;
+  transition: opacity 0.15s ease;
+}
+
+.crop-lock-btn.locked {
+  color: var(--cream);
+}
+
+.crop-lock-btn:active {
+  opacity: 0.5;
+}
+
+.crop-auto-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+  padding-bottom: 4px;
+}
+
+.crop-auto-btn {
+  background: none;
+  border: 1px solid rgba(250, 247, 244, 0.4);
+  border-radius: 12px;
+  color: var(--cream);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 6px 20px;
+  cursor: pointer;
+  -webkit-appearance: none;
+  transition: opacity 0.15s ease;
+}
+
+.crop-auto-btn:active {
+  opacity: 0.5;
+}
+
+.crop-auto-btn.active {
+  background: rgba(250, 247, 244, 0.18);
+  border-color: rgba(250, 247, 244, 0.85);
+  border-width: 1.5px;
+  font-weight: 400;
+}
+
+/* Crop bubble — label beside lock, equal spacing, no scroll */
+#crop-bubble .editor-panel-scroll {
+  padding: 14px 0 4px;
+}
+
+#crop-bubble .editor-section {
+  padding-bottom: 4px;
+}
+
+#crop-bubble .crop-lock-row {
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+#crop-bubble .crop-lock-row .editor-section-label {
+  margin-bottom: 0;
+}
+
+#crop-bubble .editor-row {
+  margin-bottom: 10px;
+}
+
+#crop-bubble .crop-auto-row {
+  margin-top: 0;
+  padding-bottom: 2px;
+}

@@ -183,6 +183,29 @@
   opacity: 0.5;
 }
 
+.btn-undo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.btn-undo-label {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text-light);
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  height: 12px;
+}
+
+.btn-undo-label.visible {
+  opacity: 1;
+}
+
 /* Preset bubble */
 .preset-bubble {
   background: var(--text-dark);
@@ -221,6 +244,7 @@
   padding: 4px 12px;
   min-height: 0;
   overflow: hidden;
+  position: relative;
 }
 
 #main-canvas {
@@ -233,6 +257,18 @@
   -webkit-user-select: none;
   user-select: none;
   -webkit-touch-callout: none;
+}
+
+#crop-canvas {
+  position: absolute;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  cursor: grab;
+  touch-action: none;
+}
+
+#crop-canvas:active {
+  cursor: grabbing;
 }
 
 /* Controls area */
