@@ -34,5 +34,6 @@ const state = {
     applied: false,
     lockedAspect: null,
     pan: { x: 0, y: 0 },
-  }
+  },
+  gradientDirection: 0,
 };

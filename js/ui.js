@@ -94,12 +94,20 @@ async function downloadImage() {
   saveCtx.putImageData(output, 0, 0);
 
   if (preset.gradient) {
-    const grad = saveCtx.createLinearGradient(0, 0, 0, saveCanvas.height);
+    const sw = saveCanvas.width;
+    const sh = saveCanvas.height;
+    let grad;
+    switch (state.gradientDirection) {
+      case 1: grad = saveCtx.createLinearGradient(0, 0, sw, 0); break;
+      case 2: grad = saveCtx.createLinearGradient(0, sh, 0, 0); break;
+      case 3: grad = saveCtx.createLinearGradient(sw, 0, 0, 0); break;
+      default: grad = saveCtx.createLinearGradient(0, 0, 0, sh); break;
+    }
     preset.gradient.stops.forEach(stop => {
       grad.addColorStop(stop.pos, `rgba(${stop.r}, ${stop.g}, ${stop.b}, ${stop.a * (state.intensity / 100)})`);
     });
     saveCtx.fillStyle = grad;
-    saveCtx.fillRect(0, 0, saveCanvas.width, saveCanvas.height);
+    saveCtx.fillRect(0, 0, sw, sh);
   }
 
   const dataUrl = saveCanvas.toDataURL('image/png');
@@ -150,6 +158,7 @@ function loadImage(file) {
       state.activePresetId = 'original';
       state.intensity = 100;
       state.currentFolderId = null;
+      state.gradientDirection = 0;
 
       intensitySlider.value = 100;
       intensityDisplay.textContent = '100';
@@ -301,6 +310,7 @@ function closeCropClean() {
   autoActive = false;
   document.getElementById('btn-auto-straighten').classList.remove('active');
   document.querySelector('.preset-bubble').classList.remove('shrunk');
+  updateGradientRotateBtn();
 }
 
 btnClose.addEventListener('click', () => {
@@ -377,6 +387,7 @@ btnEdit.addEventListener('click', () => {
     presetBubble.classList.add('shrunk');
     intensityWrap.style.display = 'none';
   }
+  updateGradientRotateBtn();
 });
 
 const btnCrop = document.getElementById('btn-crop');
@@ -406,6 +417,7 @@ btnCrop.addEventListener('click', () => {
     if (state.activePresetId !== 'original') {
       intensityWrap.style.display = 'flex';
     }
+    updateGradientRotateBtn();
   } else {
     // Close editor if open
     editorBubble.classList.remove('open');
@@ -413,6 +425,7 @@ btnCrop.addEventListener('click', () => {
     presetBubble.classList.add('shrunk');
     intensityWrap.style.display = 'none';
     document.getElementById('btn-undo').dataset.mode = 'crop';
+    updateGradientRotateBtn();
     undoLbl.textContent = 'crop';
     undoLbl.classList.add('visible');
     // Wait for the max-height transition to finish before measuring canvas position
@@ -542,17 +555,22 @@ intensitySlider.addEventListener('input', (e) => {
 });
 
 document.getElementById('preset-name-display').addEventListener('click', () => {
-  if (state.activePresetId && state.activePresetId !== 'original') {
-    state.activePresetId = 'original';
-    state.intensity = 100;
-    intensitySlider.value = 100;
-    intensityDisplay.textContent = '100';
-    updateSliderTrack(100);
-    setActivePresetUI(null);
-    document.querySelector('.intensity-wrap').style.display = 'none';
-    const nameDisplay = document.getElementById('preset-name-display');
-    nameDisplay.textContent = '';
-    nameDisplay.classList.remove('visible');
-    render();
-  }
+  state.activePresetId = 'original';
+  state.intensity = 100;
+  intensitySlider.value = 100;
+  intensityDisplay.textContent = '100';
+  updateSliderTrack(100);
+  setActivePresetUI(null);
+  document.querySelector('.intensity-wrap').style.display = 'none';
+  const nameDisplay = document.getElementById('preset-name-display');
+  nameDisplay.textContent = '';
+  nameDisplay.classList.remove('visible');
+  state.gradientDirection = 0;
+  updateGradientRotateBtn();
+  render();
+});
+
+document.getElementById('btn-gradient-rotate').addEventListener('click', () => {
+  state.gradientDirection = (state.gradientDirection + 1) % 4;
+  render();
 });
