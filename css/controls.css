@@ -150,6 +150,30 @@ input[type="range"]:active::-webkit-slider-thumb {
   opacity: 0.5;
 }
 
+/* Gradient rotate button — overlays top-left of canvas */
+.btn-gradient-rotate {
+  position: absolute;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.38);
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  z-index: 5;
+  -webkit-appearance: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: opacity 0.15s ease;
+}
+
+.btn-gradient-rotate:active {
+  opacity: 0.55;
+}
+
 /* ============================================
    EDITOR BUBBLE
    ============================================ */
