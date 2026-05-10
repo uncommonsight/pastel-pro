@@ -125,6 +125,35 @@ function applyPreset(imageData, preset, intensity) {
       }
     }
 
+    // --- Split Tone ---
+    if (preset.splitTone) {
+      const st = preset.splitTone;
+      const lumST = 0.299 * r + 0.587 * g + 0.114 * b;
+      const highlightBlend = Math.max(0, (lumST - 128) / 127) * t;
+      const shadowBlend = Math.max(0, (128 - lumST) / 128) * t;
+
+      if (highlightBlend > 0 && st.highlightTint) {
+        r = r + st.highlightTint.r * highlightBlend;
+        g = g + st.highlightTint.g * highlightBlend;
+        b = b + st.highlightTint.b * highlightBlend;
+      }
+      if (shadowBlend > 0 && st.shadowTint) {
+        r = r + st.shadowTint.r * shadowBlend;
+        g = g + st.shadowTint.g * shadowBlend;
+        b = b + st.shadowTint.b * shadowBlend;
+      }
+    }
+
+    // --- Clarity (midtone contrast) ---
+    if (preset.clarity && preset.clarity !== 0) {
+      const lumC = 0.299 * r + 0.587 * g + 0.114 * b;
+      const midtoneFactor = 1 - Math.abs(lumC - 128) / 128;
+      const clarityAdj = 1 + (preset.clarity * midtoneFactor * t);
+      r = (r - 128) * clarityAdj + 128;
+      g = (g - 128) * clarityAdj + 128;
+      b = (b - 128) * clarityAdj + 128;
+    }
+
     // --- Grain ---
     if (preset.grain && preset.grain > 0) {
       const grainAmt = preset.grain * t;
@@ -162,21 +191,39 @@ function render() {
   const output = applyPreset(freshData, preset, state.intensity);
   ctx.putImageData(output, 0, 0);
 
+  // --- Gradient overlay ---
   if (preset.gradient) {
-    const gw = canvas.width;
-    const gh = canvas.height;
-    let grad;
-    switch (state.gradientDirection) {
-      case 1: grad = ctx.createLinearGradient(0, 0, gw, 0); break;   // left → right
-      case 2: grad = ctx.createLinearGradient(0, gh, 0, 0); break;   // bottom → top
-      case 3: grad = ctx.createLinearGradient(gw, 0, 0, 0); break;   // right → left
-      default: grad = ctx.createLinearGradient(0, 0, 0, gh); break;  // top → bottom
-    }
+    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
     preset.gradient.stops.forEach(stop => {
       grad.addColorStop(stop.pos, `rgba(${stop.r}, ${stop.g}, ${stop.b}, ${stop.a * (state.intensity / 100)})`);
     });
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, gw, gh);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // --- Vignette (preset only) ---
+  if (preset.vignette && preset.vignette > 0) {
+    const vAmt = preset.vignette * (state.intensity / 100);
+    const vGrad = ctx.createRadialGradient(
+      canvas.width / 2, canvas.height / 2, canvas.height * 0.3,
+      canvas.width / 2, canvas.height / 2, canvas.height * 0.85
+    );
+    vGrad.addColorStop(0, 'rgba(0,0,0,0)');
+    vGrad.addColorStop(1, `rgba(0,0,0,${vAmt})`);
+    ctx.fillStyle = vGrad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // --- Bloom/Glow (preset only) ---
+  if (preset.bloom && preset.bloom > 0) {
+    const bloomAmt = preset.bloom * (state.intensity / 100);
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    ctx.filter = `blur(${Math.round(canvas.width * 0.015)}px) brightness(${1 + bloomAmt})`;
+    ctx.globalAlpha = bloomAmt * 0.6;
+    ctx.drawImage(canvas, 0, 0);
+    ctx.restore();
+    ctx.filter = 'none';
   }
 }
 
@@ -292,9 +339,9 @@ function drawCropOverlay() {
   cropCtx.lineWidth = 2.5;
 
   const corners = [
-    { x: cropBox.x,             y: cropBox.y,             dx: 1,  dy: 1  },
-    { x: cropBox.x + cropBox.w, y: cropBox.y,             dx: -1, dy: 1  },
-    { x: cropBox.x,             y: cropBox.y + cropBox.h, dx: 1,  dy: -1 },
+    { x: cropBox.x, y: cropBox.y, dx: 1, dy: 1 },
+    { x: cropBox.x + cropBox.w, y: cropBox.y, dx: -1, dy: 1 },
+    { x: cropBox.x, y: cropBox.y + cropBox.h, dx: 1, dy: -1 },
     { x: cropBox.x + cropBox.w, y: cropBox.y + cropBox.h, dx: -1, dy: -1 },
   ];
 
@@ -319,9 +366,9 @@ function constrainPan() {
 
 function getCorners() {
   return [
-    { x: cropBox.x,             y: cropBox.y,             pos: 'tl' },
-    { x: cropBox.x + cropBox.w, y: cropBox.y,             pos: 'tr' },
-    { x: cropBox.x,             y: cropBox.y + cropBox.h, pos: 'bl' },
+    { x: cropBox.x, y: cropBox.y, pos: 'tl' },
+    { x: cropBox.x + cropBox.w, y: cropBox.y, pos: 'tr' },
+    { x: cropBox.x, y: cropBox.y + cropBox.h, pos: 'bl' },
     { x: cropBox.x + cropBox.w, y: cropBox.y + cropBox.h, pos: 'br' },
   ];
 }
@@ -342,7 +389,7 @@ function onCropPointerDown(e) {
   }
 
   if (x > cropBox.x && x < cropBox.x + cropBox.w &&
-      y > cropBox.y && y < cropBox.y + cropBox.h) {
+    y > cropBox.y && y < cropBox.y + cropBox.h) {
     dragging = 'pan';
     dragStart = { x, y };
   }
