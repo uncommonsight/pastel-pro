@@ -1,0 +1,114 @@
+/* ============================================
+   BUTTONS & ICON CONTROLS
+   Contains: .btn-primary, .btn-icon, .btn-save,
+   .edit-icon-wrap, .btn-edit-icon, .btn-gradient-rotate
+   ============================================ */
+
+.btn-primary {
+  background: var(--text-dark);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius);
+  padding: 18px 48px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  -webkit-appearance: none;
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-mid);
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.15s;
+  -webkit-appearance: none;
+}
+
+.btn-icon:active {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.btn-save {
+  background: var(--text-dark);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 10px 22px;
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  -webkit-appearance: none;
+}
+
+.btn-save:active {
+  transform: scale(0.96);
+}
+
+.edit-icon-wrap {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.edit-icon-wrap.visible {
+  display: flex;
+}
+
+.btn-edit-icon {
+  background: none;
+  border: none;
+  color: var(--text-mid);
+  cursor: pointer;
+  padding: 8px;
+  -webkit-appearance: none;
+  transition: opacity 0.15s ease;
+}
+
+.btn-edit-icon:active {
+  opacity: 0.5;
+}
+
+/* Gradient rotate button — overlays top-left of canvas */
+.btn-gradient-rotate {
+  position: absolute;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.38);
+  border: none;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  z-index: 5;
+  -webkit-appearance: none;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  transition: opacity 0.15s ease;
+}
+
+.btn-gradient-rotate:active {
+  opacity: 0.55;
+}
