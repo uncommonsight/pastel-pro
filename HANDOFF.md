@@ -1,33 +1,38 @@
-# Handoff — controls.css Refactor
+# Handoff — Layout.css Refactor Complete
 
-## Last file edited
-- **css/controls.css** → emptied to tombstone comment; content split into 4 new files
-- **css/buttons.css** ✅ created — `.btn-primary`, `.btn-icon`, `.btn-save`, `.btn-edit-icon`, `.btn-gradient-rotate`
-- **css/sliders.css** ✅ created — `.intensity-wrap`, `.intensity-label`, `.intensity-value`, `input[type="range"]` + thumb
-- **css/editor.css** ✅ created — `.editor-bubble`, `.editor-panel-scroll`, `.editor-section`, `.editor-row`, `.editor-slider`, color chips
-- **css/crop.css** ✅ created — `.crop-lock-row`, `.crop-lock-btn`, `.crop-auto-row`, `.crop-auto-btn`, `#crop-bubble` overrides
-- **index.html** ✅ updated — CSS link order: variables.css → layout.css → buttons.css → sliders.css → editor.css → crop.css → presets.css
+## Last files edited
+- **CLAUDE.md** — Updated CSS file map (lines 13-19): replaced controls.css with buttons.css, sliders.css, editor.css, crop.css
+- **layout.css** — Removed 46 lines of button/preset styles; now contains only screen layout (206 lines)
+- **buttons.css** — Added 50 lines: .btn-header, .btn-undo-wrap/.label, header @media responsive
+- **presets.css** — Added 60 lines: .preset-name-display, .preset-bubble, preset @media responsive
 
-## Work in progress
-**None. Refactor of controls.css is complete.**
-
-All 407 lines of controls.css have been split into 4 new files with zero changes to logic or styles — pure code movement per refactor rules.
+## Work completed
+✅ **Layout.css refactored per plan** — zero code rewritten, only moved:
+- Header buttons (.btn-header, .btn-undo-*) → buttons.css (+ responsive)
+- Preset display (.preset-name-display) → presets.css (+ responsive)
+- Preset bubble (.preset-bubble, .shrunk, child overrides) → presets.css
+- Removed duplicate #screen-editor declaration
+- Verified: zero moved styles remain in layout.css via grep
+- CSS load order in index.html already correct (no changes needed)
 
 ## Decisions made
-1. **Group buttons separately** — All `.btn-*` classes moved to buttons.css for clarity, even though some are UI control buttons (edit-icon, gradient-rotate)
-2. **Sliders as a unit** — Base `input[type="range"]` moved to sliders.css alongside intensity slider styles; `.editor-slider` stays in editor.css where it's used
-3. **Editor & crop bubbles as separate files** — Each bubble system (editor-bubble, crop-bubble) gets its own file despite sharing base classes like `.editor-section` and `.editor-row` (crop-bubble overrides them via `#crop-bubble` selectors)
-4. **Load order: buttons → sliders → editor → crop** — Logical dependency chain; crop-bubble overrides reference editor classes so editor.css loads first
+1. **Preset bubble to presets.css** — Despite being a "bubble" UI component, it belongs with presets.css because that file already extensively targets `.preset-bubble` for styling
+2. **Responsive rules kept with their selectors** — Added @media blocks to buttons.css and presets.css to keep responsive rules co-located with base styles
+3. **Editor header responsive stayed in layout.css** — Not button-related, remains part of screen layout
 
 ## Next steps
-1. **Smoke test on iPhone**
-   - Load a photo
-   - Apply a preset
-   - Adjust a slider (intensity or editor)
-   - Use crop tool
-   - Export/share
-   - Verify all 5 steps work
-2. **Delete or keep controls.css** — Optional: remove the tombstone file or keep it as a pointer to where content moved
+1. **Smoke test on iPhone** (CLAUDE.md requirement):
+   - Load photo → Apply preset → Adjust slider → Crop → Export
+   - All 5 must work
+2. If any visual issues: debug and fix (likely cascade/specificity)
+3. Commit: "Refactor layout.css — move controls to buttons/presets files"
+4. Push
 
-## Blockers / open questions
-None — refactor completed successfully with exact code movement and index.html links updated.
+## Verification complete
+- ✅ Layout.css contains only screen layout (no button/preset styles)
+- ✅ buttons.css and presets.css have moved styles
+- ✅ CSS load order correct
+- ✅ CLAUDE.md reflects new architecture
+
+**No blockers. Ready for smoke test.**
+

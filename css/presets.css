@@ -360,3 +360,59 @@
 .presets-track.carousel-transition[data-direction="exit"].presets-view {
   animation-name: carouselPresetsToFolders;
 }
+
+/* Preset name — appears under title when preset selected */
+.preset-name-display {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 17px;
+  letter-spacing: 0.15em;
+  color: var(--text-mid);
+  text-transform: lowercase;
+  display: none;
+  height: 22px;
+  cursor: pointer;
+}
+
+.preset-name-display.visible {
+  display: block;
+}
+
+.preset-name-display:active {
+  opacity: 0.5;
+}
+
+@media (max-width: 430px) {
+  .preset-name-display {
+    font-size: 13px;
+  }
+}
+
+/* Preset bubble */
+.preset-bubble {
+  background: var(--text-dark);
+  border-radius: 16px;
+  margin: 0 12px 8px;
+  box-shadow: var(--shadow);
+  padding: 6px 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.preset-bubble.shrunk {
+  padding: 4px 0;
+  border-radius: 12px;
+}
+
+.preset-bubble .folder-item {
+  gap: 4px;
+}
+
+.preset-bubble .preset-item {
+  gap: 4px;
+}
+
+.preset-bubble .folder-visual {
+  width: 60px;
+  height: 60px;
+}
