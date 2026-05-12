@@ -12,8 +12,11 @@ state.js → presets.js → ui.js → render.js → navigation.js → app.js
 - js/app.js — init
 - css/variables.css — design tokens
 - css/layout.css — screen layout
-- css/controls.css — buttons, sliders, bubbles
-- css/presets.css — preset strip, thumbnails
+- css/buttons.css — buttons & icon controls
+- css/sliders.css — intensity slider & range inputs
+- css/editor.css — editor bubble & controls
+- css/crop.css — crop controls
+- css/presets.css — preset strip, thumbnails, preset display
 
 ## State Shape
 state = {
