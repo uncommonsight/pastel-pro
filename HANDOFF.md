@@ -1,20 +1,21 @@
 ## Last files edited
-- `css/presets.css` — stripped to strip-only styles (Groups 1–4, 6, 9); folder view and carousel animations removed
-- `css/folders.css` — new file: folder view, folder indicator base styles, and carousel animations (Groups 5, 7, 8)
-- `index.html` — added `<link rel="stylesheet" href="css/folders.css">` after `presets.css`
-- `js/render.js` — restored lost `state.gradientDirection` switch at line 195
+- `js/folders.js` — new file: `buildPresetThumbnails`, `renderFoldersView`, `renderPresetsView`, `enterFolder`, `exitFolder` (moved from navigation.js)
+- `js/preset-select.js` — new file: `selectPreset`, `findPreset`, `setActivePresetUI`, `updateFolderHeader`, `updateGradientRotateBtn` (moved from navigation.js)
+- `js/navigation.js` — deleted (all functions moved out)
+- `index.html` — replaced `navigation.js` script tag with `preset-select.js` then `folders.js`
 
 ## Work in progress
-presets.css refactor is complete. No task is mid-flight.
+navigation.js refactor is complete. No task is mid-flight.
 
 ## Decisions made
-- Group 5 (folder indicator base styles: `.folder-indicator`, `.folder-visual-small`) moved to `folders.css` — its `[data-folder-type]` visual skins live in Group 7, keeping them split would fragment one component across two files.
-- Gradient rotate button bug fixed in-session: commit `b1f31dd` (cinema presets) accidentally replaced the 4-direction `switch(state.gradientDirection)` in `render.js` with a hardcoded top-to-bottom gradient. Restored from `298f36c`.
+- Split navigation.js into two files instead of one: folder rendering/navigation logic → `folders.js`, preset selection + UI state → `preset-select.js`
+- `preset-select.js` loads before `folders.js` because `folders.js` calls `selectPreset`, `updateGradientRotateBtn`, and `updateFolderHeader` at runtime
+- navigation.js fully deleted — nothing remained after the split
 
 ## Next steps
-1. **Smoke test on iPhone** — load photo, apply gradient preset, tap rotate arrow (must cycle 4 directions), apply another preset, adjust slider, crop, export. All 5 smoke test steps must pass.
-2. **Commit** — suggested message: `refactor: split presets.css into presets and folders, fix gradient rotate regression`
-3. **Next refactor candidate** — `css/layout.css` if continuing the CSS split (not yet reviewed for splitting).
+1. **Smoke test on iPhone** — load photo, apply a preset, tap a folder, navigate back, adjust slider, use crop, export. All 5 smoke test steps must pass.
+2. **Commit** — suggested message: `refactor: split navigation.js into folders.js and preset-select.js`
+3. **Next refactor candidate** — `js/ui.js` is the largest remaining JS file and likely has groupable sections; review before splitting.
 
 ## Blockers / open questions
 - Smoke test not yet run on device — required before push.
