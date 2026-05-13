@@ -1,31 +1,24 @@
 # HANDOFF
 
 ## Last file edited
-`CLAUDE.md` and `README.md` — documentation updated to match current codebase.
+Three files changed this session (Fade → Clarity editor swap):
 
-**CLAUDE.md changes:**
-- File map load order updated to full 13-file chain: `state → presets → ui → download → compare → image-load → editor → render → crop → crop-ui → preset-select → folders → app`
-- All new JS files described (download.js, compare.js, image-load.js, editor.js, crop-ui.js, preset-select.js, folders.js)
-- `css/folders.css` added to CSS list
-- Preset System shape corrected: added `clarity`, `vignette`, `bloom`, `splitTone`; fixed gradient structure to `{ type, stops:[{pos,r,g,b,a}] }`
-
-**README.md changes:**
-- All preset tables replaced with bold-name list format per user request
-- Cinema folder added (was completely missing): Matrix, Titanic, Casablanca, Blade, Drive
-- Glow folder description updated to mention bloom
+- **`index.html`** — replaced Fade slider row with Clarity: id `edit-clarity`, range -0.5–0.5, step 0.01
+- **`js/editor.js`** — swapped fade entry in `editorSliders` for clarity; added `clarity: 0` to `resetEditorState()`; `fade: 0` was removed from `state.editor` by a linter after the edit
+- **`js/render.js`** — added `const clarity = (preset.clarity !== undefined ? preset.clarity : 0) + ed.clarity;` before the pixel loop; updated clarity block to use `clarity` instead of `preset.clarity`
 
 ## Work in progress
-Nothing in flight. Documentation pass is complete.
+Task is complete, but one follow-up fix is needed before pushing (see Next Steps #1).
 
 ## Decisions made
-- Cinema preset descriptions written from the preset data (tint color, contrast, grain, vignette values) since there were no existing descriptions — kept them short and vibe-focused to match the README tone.
-- Kept CLAUDE.md Refactor Rules section unchanged — still active.
+- Clarity range set to -0.5–0.5 (same as contrast) — preset values are 0.15–0.40, so this gives useful adjustment room in both directions.
+- Fade's preset-engine code was intentionally left untouched. The `const fade = ... + ed.fade` merge line in render.js still exists.
+- `fade: 0` was present in `state.editor` after the edit but a linter removed it, leaving `ed.fade` as `undefined`.
 
 ## Next steps
-1. **Smoke test on iPhone** — still required before pushing. All 5 steps: load photo, apply preset, adjust slider, crop/undo/straighten, export. This was flagged in the previous handoff and has not been done yet.
-2. **Commit** — suggested message: `refactor: split ui.js into compare, image-load, editor, crop-ui, download; update docs`
-3. **Next refactor candidate** — `js/render.js` (237 lines): consider splitting `applyPreset` filter engine into its own file, leaving `render()`, `scheduleRender`, and gradient paint in render.js.
+1. **Fix potential NaN in fade rendering** — `render.js` line ~25: `const fade = (preset.fade !== undefined ? preset.fade : 0) + ed.fade` — `ed.fade` is now `undefined` since the linter removed it from `state.editor`. This makes `fade` NaN for any preset that has a `fade` property. Fix: add `fade: 0` back to `resetEditorState()` in `editor.js`. Verify by checking `js/presets.js` for any `fade:` entries.
+2. **Smoke test on iPhone** — load photo → apply preset → adjust Clarity slider → crop → export. Confirm preset fade still renders (see #1 first).
+3. **Commit** — suggested message: `feat: replace Fade editor slider with Clarity`
 
 ## Blockers / open questions
-- Smoke test not yet run on device — required before push.
-- `TODO.md` exists in the project root but was not reviewed this session — may contain relevant tasks.
+- `ed.fade` is `undefined` — whether this breaks anything depends on whether any preset has a `fade` value. Grep `js/presets.js` for `fade:` before pushing.

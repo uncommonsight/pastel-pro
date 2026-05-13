@@ -26,6 +26,7 @@ function applyPreset(imageData, preset, intensity) {
   const warmth = (preset.warmth !== undefined ? preset.warmth : 0) + ed.warmth;
   const highlights = (preset.highlights !== undefined ? preset.highlights : 0) + ed.highlights;
   const shadows = (preset.shadows !== undefined ? preset.shadows : 0) + ed.shadows;
+  const clarity = (preset.clarity !== undefined ? preset.clarity : 0) + ed.clarity;
 
   for (let i = 0; i < data.length; i += 4) {
     let r = src[i];
@@ -145,10 +146,10 @@ function applyPreset(imageData, preset, intensity) {
     }
 
     // --- Clarity (midtone contrast) ---
-    if (preset.clarity && preset.clarity !== 0) {
+    if (clarity && clarity !== 0) {
       const lumC = 0.299 * r + 0.587 * g + 0.114 * b;
       const midtoneFactor = 1 - Math.abs(lumC - 128) / 128;
-      const clarityAdj = 1 + (preset.clarity * midtoneFactor * t);
+      const clarityAdj = 1 + (clarity * midtoneFactor * t);
       r = (r - 128) * clarityAdj + 128;
       g = (g - 128) * clarityAdj + 128;
       b = (b - 128) * clarityAdj + 128;
