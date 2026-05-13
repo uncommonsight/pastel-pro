@@ -1,21 +1,20 @@
 ## Last files edited
-- `js/folders.js` — new file: `buildPresetThumbnails`, `renderFoldersView`, `renderPresetsView`, `enterFolder`, `exitFolder` (moved from navigation.js)
-- `js/preset-select.js` — new file: `selectPreset`, `findPreset`, `setActivePresetUI`, `updateFolderHeader`, `updateGradientRotateBtn` (moved from navigation.js)
-- `js/navigation.js` — deleted (all functions moved out)
-- `index.html` — replaced `navigation.js` script tag with `preset-select.js` then `folders.js`
+- `js/crop.js` — new file: `showCropOverlay`, `hideCropOverlay`, `resetCropBox`, `updateCropOverlay`, `drawCropOverlay`, `constrainPan`, `getCorners`, `onCropPointerDown`, `onCropPointerMove`, `onCropPointerUp`, `applyCrop`, `detectHorizon`, `findEdgeInColumn` (moved from render.js)
+- `js/render.js` — crop overlay section + horizon detection removed; now 237 lines, filter engine + canvas draw only
+- `index.html` — added `crop.js` script tag between `render.js` and `preset-select.js`
 
 ## Work in progress
-navigation.js refactor is complete. No task is mid-flight.
+render.js refactor is complete. No task is mid-flight.
 
 ## Decisions made
-- Split navigation.js into two files instead of one: folder rendering/navigation logic → `folders.js`, preset selection + UI state → `preset-select.js`
-- `preset-select.js` loads before `folders.js` because `folders.js` calls `selectPreset`, `updateGradientRotateBtn`, and `updateFolderHeader` at runtime
-- navigation.js fully deleted — nothing remained after the split
+- Split render.js into two files: filter engine + canvas draw stays in `render.js`, all crop overlay code + horizon detection moved to `crop.js`
+- `crop.js` loads after `render.js` because `applyCrop()` calls `render()` at the end of its blob callback
+- `detectHorizon` and `findEdgeInColumn` went into `crop.js` (not a separate file) because they are only ever used in crop context (auto-straighten)
 
 ## Next steps
-1. **Smoke test on iPhone** — load photo, apply a preset, tap a folder, navigate back, adjust slider, use crop, export. All 5 smoke test steps must pass.
-2. **Commit** — suggested message: `refactor: split navigation.js into folders.js and preset-select.js`
-3. **Next refactor candidate** — `js/ui.js` is the largest remaining JS file and likely has groupable sections; review before splitting.
+1. **Smoke test on iPhone** — load photo, apply a preset, adjust a slider, use crop tool, export/share. All 5 must pass before pushing.
+2. **Commit** — suggested message: `refactor: split render.js crop overlay into crop.js`
+3. **Next refactor candidate** — `js/ui.js` was flagged last session as the largest remaining JS file; review its sections before splitting.
 
 ## Blockers / open questions
 - Smoke test not yet run on device — required before push.
