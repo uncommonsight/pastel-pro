@@ -14,77 +14,75 @@ Presets are organized into folders. Tap a folder to browse, tap a preset to appl
 
 Soft tones with a warm film feel.
 
-| Preset | Vibe |
-|---|---|
-| Blush | Warm rosy pink |
-| Petal | Romantic pink-lilac, slightly faded |
-| Lavender | Soft purple dream |
-| Cotton Candy | Dreamy pink-purple |
-| Mist | Cool grey-blue atmosphere |
-| Sky | Light, open blue |
-| Cream | Warm buttery light |
+**Blush** — warm rosy pink with lifted highlights
+**Petal** — romantic pink-lilac, slightly faded
+**Lavender** — soft purple dream, slightly cool
+**Cotton Candy** — dreamy pink-purple with extra saturation
+**Mist** — cool grey-blue atmosphere
+**Sky** — light, open blue
+**Cream** — warm buttery light with gentle contrast
 
 ### Vibrant
 
-Punchy, saturated, high-contrast color.
+Punchy, saturated, high-contrast color with clarity and vignette.
 
-| Preset | Vibe |
-|---|---|
-| Rose | Bold warm rose |
-| Peach | Bright peachy warmth |
-| Violet | Rich cool purple |
-| Electric Sky | Deep electric blue |
-| Jade | Saturated green |
-| Fuchsia | Intense magenta |
+**Rose** — bold warm rose with deep vignette
+**Peach** — bright peachy warmth
+**Violet** — rich cool purple
+**Electric Sky** — deep electric blue, very cool
+**Jade** — saturated green
+**Fuchsia** — intense magenta
 
 ### Gradients
 
 A color wash painted over your image — great for sky shots. Tap a gradient preset, then use the **rotate button** (top-left corner of the photo) to cycle the wash direction: top, left, bottom, or right. The rotate button only appears when the Gradients folder is open and a gradient is active — open the editor or crop tool and it steps aside until you're done.
 
-| Preset | Vibe |
-|---|---|
-| Golden Hour | Amber warmth from above |
-| Blue Hour | Cool deep blue dusk |
-| Rose Sky | Soft pink blush at the top |
-| Cotton Sky | Pink-to-lavender-to-blue sweep |
-| Lavender Sky | Soft purple haze |
+**Golden Hour** — amber warmth sweeping from above
+**Blue Hour** — cool deep blue dusk at the top
+**Rose Sky** — soft pink blush washing down from the top
+**Cotton Sky** — pink-to-lavender-to-blue sweep
+**Lavender Sky** — soft purple haze from above
+
+### Cinema
+
+Film stock looks inspired by iconic movies. Grain, vignette, and split toning throughout.
+
+**Matrix** — high-contrast green-tinted cyberpunk look with heavy vignette
+**Titanic** — desaturated cool blue with soft bloom and fine grain
+**Casablanca** — warm, heavily faded, full grain and vignette — golden-era warmth
+**Blade** — dark and cold, desaturated, deep vignette — neo-noir
+**Drive** — very dark and faded, desaturated blue-purple, heavy bloom — slow-burn moody
 
 ### Glow
 
-Dark, moody, and electric.
+Dark, moody, and electric with bloom.
 
-| Preset | Vibe |
-|---|---|
-| Neon | High contrast with a purple edge |
-| Electric | Cold electric blue-black |
-| Ember | Warm orange-red fire glow |
-| Midnight | Deep dark blue-black |
-| Haze | Moody purple haze |
+**Neon** — high contrast with a purple edge and deep vignette
+**Electric** — cold electric blue-black
+**Ember** — warm orange-red fire glow
+**Midnight** — deep dark blue-black, heavy vignette
+**Haze** — moody purple haze
 
 ### Retro
 
 Film and analog era looks with added grain texture.
 
-| Preset | Vibe |
-|---|---|
-| Kodak Gold | Warm, faded, classic film |
-| Polaroid | Overexposed, slightly cool and faded |
-| Portra 800 | Fine grain, warm skin tones |
-| Cross | Cross-processed greens and contrast |
-| Digicam | Early 2000s digital oversaturation |
-| CRT | Green-tinted CRT monitor look |
-| VHS | Washed-out, purple-shifted tape |
-| SVGA | Cool faded early PC monitor |
+**Kodak Gold** — warm, faded, classic film with heavy grain
+**Polaroid** — overexposed, slightly cool and faded
+**Portra 800** — fine grain, warm skin tones, soft bloom
+**Cross** — cross-processed greens and contrast
+**Digicam** — early 2000s digital oversaturation
+**CRT** — green-tinted CRT monitor look
+**VHS** — washed-out, purple-shifted tape
+**SVGA** — cool faded early PC monitor
 
 ### Noir
 
 Black and white.
 
-| Preset | Vibe |
-|---|---|
-| Classic | Pure neutral B&W |
-| Soft | Lifted blacks, filmy fade |
-| Dramatic | Deep blacks, high contrast |
+**Classic** — pure neutral B&W
+**Soft** — lifted blacks, filmy fade
+**Dramatic** — deep blacks, high contrast
 
 ---
 
