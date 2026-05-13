@@ -1,0 +1,226 @@
+/* ============================================
+   folders.css
+   Folder grid view, folder indicator strip icon,
+   and carousel animations for folder↔preset transitions.
+   Moved from presets.css.
+   ============================================ */
+
+/* Folder indicator */
+.folder-indicator {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  width: 100px;
+  padding: 8px 0;
+}
+
+.folder-indicator .folder-visual-small {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.folder-indicator:active .folder-visual-small {
+  transform: scale(0.95);
+  box-shadow: 0 4px 16px rgba(58, 48, 53, 0.18);
+}
+
+.folder-indicator .folder-name {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+/* ============================================
+   FOLDER VIEW
+   ============================================ */
+
+.folder-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+  position: relative;
+}
+
+.folder-item:active {
+  transform: scale(0.95);
+}
+
+.folder-visual {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.presets-track.folders-view {
+  justify-content: flex-start;
+}
+
+.folder-item[data-folder-type="pastels"] .folder-visual {
+  background: radial-gradient(circle at 40% 40%, #f5bfe0 0%, #eca8d8 25%, #dfa0d4 45%, #c8a8e0 65%, #b8c8e8 100%);
+  box-shadow: 0 0 24px rgba(200, 168, 224, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.folder-item[data-folder-type="vibrant"] .folder-visual {
+  background: linear-gradient(135deg, #f4a0b8 0%, #f8c88a 30%, #c4a0e8 60%, #90c0f0 100%);
+  box-shadow: 0 0 20px rgba(244, 160, 184, 0.25), inset 0 0 12px rgba(255, 255, 255, 0.25);
+}
+
+.folder-item[data-folder-type="gradients"] .folder-visual {
+  background: linear-gradient(135deg, #f2c4ce 0%, #e8b4d0 25%, #d9a8d8 50%, #c9dce8 75%, #b8dce8 100%);
+  box-shadow: var(--shadow-sm);
+}
+
+.folder-item[data-folder-type="glow"] .folder-visual {
+  background: radial-gradient(circle at 40% 40%, #d8b4fe 0%, #a5b4fc 35%, #6d5fa6 65%, #2e2450 100%);
+  box-shadow: 0 0 18px rgba(216, 180, 254, 0.20), inset 0 0 10px rgba(255, 255, 255, 0.12);
+}
+
+.folder-item[data-folder-type="cinema"] .folder-visual {
+  background: linear-gradient(135deg, #c4607a 0%, #7a5090 35%, #3a6898 70%, #1e4070 100%);
+  box-shadow: 0 0 20px rgba(196, 96, 122, 0.25), inset 0 0 12px rgba(58, 104, 152, 0.20);
+}
+
+.folder-item[data-folder-type="retro"] .folder-visual {
+  background: linear-gradient(135deg, #f7c068 0%, #f0a84a 30%, #5a8a6a 65%, #3a6a50 100%);
+  box-shadow: 0 0 18px rgba(247, 192, 104, 0.20), inset 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+.folder-item[data-folder-type="noir"] .folder-visual {
+  background: radial-gradient(circle at 35% 35%, #888888 0%, #606060 40%, #383838 100%);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.08);
+}
+
+.folder-indicator[data-folder-type="pastels"] .folder-visual-small {
+  background: radial-gradient(circle at 40% 40%, #f5bfe0 0%, #eca8d8 25%, #dfa0d4 45%, #c8a8e0 65%, #b8c8e8 100%);
+  box-shadow: 0 0 24px rgba(200, 168, 224, 0.3), inset 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.folder-indicator[data-folder-type="vibrant"] .folder-visual-small {
+  background: linear-gradient(135deg, #f4a0b8 0%, #f8c88a 30%, #c4a0e8 60%, #90c0f0 100%);
+  box-shadow: 0 0 20px rgba(244, 160, 184, 0.25), inset 0 0 12px rgba(255, 255, 255, 0.25);
+}
+
+.folder-indicator[data-folder-type="gradients"] .folder-visual-small {
+  background: linear-gradient(135deg, #f2c4ce 0%, #e8b4d0 25%, #d9a8d8 50%, #c9dce8 75%, #b8dce8 100%);
+  box-shadow: var(--shadow-sm);
+}
+
+.folder-indicator[data-folder-type="glow"] .folder-visual-small {
+  background: radial-gradient(circle at 40% 40%, #d8b4fe 0%, #a5b4fc 35%, #6d5fa6 65%, #2e2450 100%);
+  box-shadow: 0 0 18px rgba(216, 180, 254, 0.20), inset 0 0 10px rgba(255, 255, 255, 0.12);
+}
+
+.folder-indicator[data-folder-type="cinema"] .folder-visual-small {
+  background: linear-gradient(135deg, #c4607a 0%, #7a5090 35%, #3a6898 70%, #1e4070 100%);
+  box-shadow: 0 0 20px rgba(196, 96, 122, 0.25), inset 0 0 12px rgba(58, 104, 152, 0.20);
+}
+
+.folder-indicator[data-folder-type="retro"] .folder-visual-small {
+  background: linear-gradient(135deg, #f7c068 0%, #f0a84a 30%, #5a8a6a 65%, #3a6a50 100%);
+  box-shadow: 0 0 18px rgba(247, 192, 104, 0.20), inset 0 0 12px rgba(255, 255, 255, 0.08);
+}
+
+.folder-indicator[data-folder-type="noir"] .folder-visual-small {
+  background: radial-gradient(circle at 35% 35%, #888888 0%, #606060 40%, #383838 100%);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.2), inset 0 0 10px rgba(255, 255, 255, 0.08);
+}
+
+.folder-name {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--text-dark);
+  text-transform: uppercase;
+}
+
+.folder-count {
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-light);
+}
+
+/* ============================================
+   CAROUSEL ANIMATIONS
+   ============================================ */
+
+@keyframes carouselFoldersToPresets {
+  from {
+    opacity: 1;
+    transform: translateX(0) scaleX(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-100%) scaleX(0.8);
+  }
+}
+
+@keyframes carouselPresetsFromFolders {
+  from {
+    opacity: 0;
+    transform: translateX(100%) scaleX(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scaleX(1);
+  }
+}
+
+@keyframes carouselPresetsToFolders {
+  from {
+    opacity: 1;
+    transform: translateX(0) scaleX(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(100%) scaleX(0.8);
+  }
+}
+
+@keyframes carouselFoldersFromPresets {
+  from {
+    opacity: 0;
+    transform: translateX(-100%) scaleX(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) scaleX(1);
+  }
+}
+
+.presets-track.carousel-transition {
+  animation-duration: 0.6s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: forwards;
+}
+
+.presets-track.carousel-transition[data-direction="enter"].folders-view {
+  animation-name: carouselFoldersToPresets;
+}
+
+.presets-track.carousel-transition[data-direction="exit"].presets-view {
+  animation-name: carouselPresetsToFolders;
+}

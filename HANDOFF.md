@@ -1,38 +1,20 @@
-# Handoff — Layout.css Refactor Complete
-
 ## Last files edited
-- **CLAUDE.md** — Updated CSS file map (lines 13-19): replaced controls.css with buttons.css, sliders.css, editor.css, crop.css
-- **layout.css** — Removed 46 lines of button/preset styles; now contains only screen layout (206 lines)
-- **buttons.css** — Added 50 lines: .btn-header, .btn-undo-wrap/.label, header @media responsive
-- **presets.css** — Added 60 lines: .preset-name-display, .preset-bubble, preset @media responsive
+- `css/presets.css` — stripped to strip-only styles (Groups 1–4, 6, 9); folder view and carousel animations removed
+- `css/folders.css` — new file: folder view, folder indicator base styles, and carousel animations (Groups 5, 7, 8)
+- `index.html` — added `<link rel="stylesheet" href="css/folders.css">` after `presets.css`
+- `js/render.js` — restored lost `state.gradientDirection` switch at line 195
 
-## Work completed
-✅ **Layout.css refactored per plan** — zero code rewritten, only moved:
-- Header buttons (.btn-header, .btn-undo-*) → buttons.css (+ responsive)
-- Preset display (.preset-name-display) → presets.css (+ responsive)
-- Preset bubble (.preset-bubble, .shrunk, child overrides) → presets.css
-- Removed duplicate #screen-editor declaration
-- Verified: zero moved styles remain in layout.css via grep
-- CSS load order in index.html already correct (no changes needed)
+## Work in progress
+presets.css refactor is complete. No task is mid-flight.
 
 ## Decisions made
-1. **Preset bubble to presets.css** — Despite being a "bubble" UI component, it belongs with presets.css because that file already extensively targets `.preset-bubble` for styling
-2. **Responsive rules kept with their selectors** — Added @media blocks to buttons.css and presets.css to keep responsive rules co-located with base styles
-3. **Editor header responsive stayed in layout.css** — Not button-related, remains part of screen layout
+- Group 5 (folder indicator base styles: `.folder-indicator`, `.folder-visual-small`) moved to `folders.css` — its `[data-folder-type]` visual skins live in Group 7, keeping them split would fragment one component across two files.
+- Gradient rotate button bug fixed in-session: commit `b1f31dd` (cinema presets) accidentally replaced the 4-direction `switch(state.gradientDirection)` in `render.js` with a hardcoded top-to-bottom gradient. Restored from `298f36c`.
 
 ## Next steps
-1. **Smoke test on iPhone** (CLAUDE.md requirement):
-   - Load photo → Apply preset → Adjust slider → Crop → Export
-   - All 5 must work
-2. If any visual issues: debug and fix (likely cascade/specificity)
-3. Commit: "Refactor layout.css — move controls to buttons/presets files"
-4. Push
+1. **Smoke test on iPhone** — load photo, apply gradient preset, tap rotate arrow (must cycle 4 directions), apply another preset, adjust slider, crop, export. All 5 smoke test steps must pass.
+2. **Commit** — suggested message: `refactor: split presets.css into presets and folders, fix gradient rotate regression`
+3. **Next refactor candidate** — `css/layout.css` if continuing the CSS split (not yet reviewed for splitting).
 
-## Verification complete
-- ✅ Layout.css contains only screen layout (no button/preset styles)
-- ✅ buttons.css and presets.css have moved styles
-- ✅ CSS load order correct
-- ✅ CLAUDE.md reflects new architecture
-
-**No blockers. Ready for smoke test.**
-
+## Blockers / open questions
+- Smoke test not yet run on device — required before push.
