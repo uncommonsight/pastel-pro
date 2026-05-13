@@ -2,13 +2,20 @@
 Mobile-first PWA photo editor. Plain HTML/CSS/JS, no build step. Target: iPhone iOS Safari PWA.
 
 ## File Map (load order matters)
-state.js → presets.js → ui.js → render.js → navigation.js → app.js
+state.js → presets.js → ui.js → download.js → compare.js → image-load.js → editor.js → render.js → crop.js → crop-ui.js → preset-select.js → folders.js → app.js
 - index.html — single page, all screens inline
 - js/state.js — global `state` object
 - js/presets.js — PRESET_FOLDERS array
-- js/render.js — filter engine, canvas draw, crop overlay
-- js/navigation.js — folder/preset nav, thumbnails
-- js/ui.js — DOM refs, event handlers, image load, undo, crop wiring
+- js/ui.js — DOM refs, showScreen, intensity slider, preset-name events
+- js/download.js — downloadImage, export/share via navigator.share or anchor
+- js/compare.js — hold-to-compare canvas behavior (pointerdown/pointerup)
+- js/image-load.js — loadImage, FileReader, canvas resize, state init
+- js/editor.js — editorSliders config, resetEditorState, slider/color-chip wiring, btnEdit toggle
+- js/render.js — scheduleRender, applyPreset filter engine, render()
+- js/crop.js — crop overlay canvas, pan/corner resize, applyCrop, detectHorizon
+- js/crop-ui.js — crop bubble toggle, lock, straighten, auto-straighten, undo
+- js/preset-select.js — selectPreset, setActivePresetUI, updateFolderHeader, updateGradientRotateBtn
+- js/folders.js — buildPresetThumbnails, renderFoldersView, renderPresetsView, enterFolder, exitFolder
 - js/app.js — init
 - css/variables.css — design tokens
 - css/layout.css — screen layout
@@ -17,6 +24,7 @@ state.js → presets.js → ui.js → render.js → navigation.js → app.js
 - css/editor.css — editor bubble & controls
 - css/crop.css — crop controls
 - css/presets.css — preset strip, thumbnails, preset display
+- css/folders.css — folder grid view, folder indicator strip, carousel animations
 
 ## State Shape
 state = {
@@ -37,9 +45,11 @@ Editor sliders are additive deltas on top of preset — never absolute.
 
 ## Preset System
 Each preset: { id, name, brightness, saturation, tint:{r,g,b}, fade,
-               warmth?, highlights?, shadows?, contrast?, grain?, gradient? }
+               warmth?, contrast?, grain?, clarity?, vignette?, bloom?,
+               splitTone?:{highlightTint,shadowTint}, gradient? }
 - grain = preset-only, random noise per pixel
-- gradient = array of {pos,r,g,b,a} stops painted after pixel processing
+- gradient = { type, stops:[{pos,r,g,b,a}] } painted after pixel processing
+- splitTone = separate tint applied to highlights vs shadows
 - Selecting same preset twice deselects it
 - Active preset shown in header .preset-name-display — tap to deselect
 
