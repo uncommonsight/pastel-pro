@@ -193,12 +193,20 @@ function render() {
 
   // --- Gradient overlay ---
   if (preset.gradient) {
-    const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    const gw = canvas.width;
+    const gh = canvas.height;
+    let grad;
+    switch (state.gradientDirection) {
+      case 1: grad = ctx.createLinearGradient(0, 0, gw, 0); break;   // left → right
+      case 2: grad = ctx.createLinearGradient(0, gh, 0, 0); break;   // bottom → top
+      case 3: grad = ctx.createLinearGradient(gw, 0, 0, 0); break;   // right → left
+      default: grad = ctx.createLinearGradient(0, 0, 0, gh); break;  // top → bottom
+    }
     preset.gradient.stops.forEach(stop => {
       grad.addColorStop(stop.pos, `rgba(${stop.r}, ${stop.g}, ${stop.b}, ${stop.a * (state.intensity / 100)})`);
     });
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, gw, gh);
   }
 
   // --- Vignette (preset only) ---
