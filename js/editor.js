@@ -10,7 +10,7 @@ const editorSliders = [
   { id: 'edit-whites', key: 'whites', valId: 'edit-whites-val', decimals: 2 },
   { id: 'edit-blacks', key: 'blacks', valId: 'edit-blacks-val', decimals: 2 },
   { id: 'edit-contrast', key: 'contrast', valId: 'edit-contrast-val', decimals: 2 },
-  { id: 'edit-fade', key: 'fade', valId: 'edit-fade-val', decimals: 1 },
+  { id: 'edit-clarity', key: 'clarity', valId: 'edit-clarity-val', decimals: 2 },
   { id: 'edit-saturation', key: 'saturation', valId: 'edit-saturation-val', decimals: 2 },
   { id: 'edit-warmth', key: 'warmth', valId: 'edit-warmth-val', decimals: 0 },
 ];
@@ -27,7 +27,7 @@ function resetEditorState() {
     whites: 0,
     blacks: 0,
     contrast: 0,
-    fade: 0,
+    clarity: 0,
     saturation: 0,
     warmth: 0,
     colorSat: { red: 0, orange: 0, yellow: 0, green: 0, cyan: 0, blue: 0, purple: 0 },
